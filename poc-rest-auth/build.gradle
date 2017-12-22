@@ -1,0 +1,108 @@
+buildscript {
+    ext {
+        springBootVersion = "1.5.4.RELEASE"
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "checkstyle"
+apply plugin: "org.springframework.boot"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "checkstyle"
+    apply plugin: "org.springframework.boot"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+    ext {
+        lombokVersion = "1.16.16"
+    }
+
+    dependencies {
+        compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    }
+}
+
+project("auth") {
+    dependencies {
+        compile("org.springframework.boot:spring-boot-starter-data-jpa")
+        compile("org.springframework.boot:spring-boot-starter-web")
+
+        compile("org.springframework.boot:spring-boot-starter-security")
+    }
+}
+
+project("core") {
+    dependencies {
+        compile("org.springframework.boot:spring-boot-starter-web")
+
+        compile("org.springframework.boot:spring-boot-starter-data-jpa")
+        runtime("org.postgresql:postgresql")
+    }
+}
+
+project("api") {
+    ext {
+        swaggerVersion = "2.4.0"
+        jacksonVersion = "2.8.8"
+        specificationArgResolverVersion = "0.9.2"
+    }
+
+    dependencies {
+        compile("org.springframework.boot:spring-boot-starter-web")
+
+        compile("io.springfox:springfox-swagger2:${swaggerVersion}")
+        compile("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+
+        compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+
+        compile "net.kaczmarzyk:specification-arg-resolver:${specificationArgResolverVersion}"
+
+        compile project(":core")
+        compile project(":auth")
+    }
+}
+
+dependencies {
+    compile project(":api")
+    compile project(":auth")
+    compile project(":core")
+
+    compileOnly("org.projectlombok:lombok")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.security:spring-security-test")
+}
+
+jar {
+    baseName = "agile-report"
+    version = "1.0.0-SNAPSHOT"
+}
+
+allprojects {
+    checkstyle {
+        configFile = new File(rootDir, "checkstyle.xml")
+    }
+
+    test.dependsOn checkstyleMain
+}

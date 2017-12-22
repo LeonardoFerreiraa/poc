@@ -1,0 +1,6 @@
+rootProject.name = 'report'
+
+include 'auth'
+include 'core'
+include 'api'
+
