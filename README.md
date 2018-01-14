@@ -6,6 +6,6 @@ repositório com poc's.
   - http://mapstruct.org
 - spring aop
 - cucumber
-  - leonardoferreira.com.br/2017/07/01/hello-cucumber.html
+  - http://leonardoferreira.com.br/2017/07/01/hello-cucumber.html
 - rest auth
 
