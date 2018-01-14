@@ -1,4 +1,4 @@
-rootProject.name = 'report'
+rootProject.name = 'poc-rest-auth'
 
 include 'auth'
 include 'core'
