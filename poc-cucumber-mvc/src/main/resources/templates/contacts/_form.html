@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="form(method)">
+    <form th:action="@{/contacts}" th:method="${method}" th:object="${contact}">
+        <input type="hidden" th:field="*{id}" th:value="${contact.id}"/>
+
+        <div class="form-group">
+            <label>Nome</label>
+            <input type="text" th:field="*{name}" class="form-control" />
+            <label th:errors="*{name}"></label>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" th:field="*{email}" class="form-control" />
+            <label th:errors="*{email}"></label>
+        </div>
+
+        <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" th:field="*{phone.number}" class="form-control" />
+            <label th:errors="*{phone.number}"></label>
+        </div>
+
+        <div class="text-right">
+            <a th:href="@{/contacts}" class="btn btn-default">Voltar</a>
+            <button type="submit" class="btn btn-default">Salvar</button>
+        </div>
+    </form>
+</th:block>
+</html>

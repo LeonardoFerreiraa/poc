@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:/tmp/hello_cucumber
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  profiles:
+    active:
+      - test
