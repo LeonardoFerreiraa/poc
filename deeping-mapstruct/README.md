@@ -1,3 +1,4 @@
+```
 3.2. Adding custom methods to mappers
     Example 9. Mapper defined by an abstract class
 3.5. Mappings with direct field access
@@ -11,3 +12,4 @@
 12.1.1. Decorators with the Spring component model
 12.2. Mapping customization with before-mapping and after-mapping methods
 13. Using the MapStruct SPI
+```
