@@ -1,0 +1,21 @@
+group 'mapstruct.saballestra'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.mapstruct:mapstruct-jdk8:1.2.0.Final"
+    compile "org.mapstruct:mapstruct-processor:1.2.0.Final"
+
+    compile "org.projectlombok:lombok:1.16.20"
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.assertj:assertj-core:3.9.0"
+    testCompile "com.github.javafaker:javafaker:0.14"
+}
