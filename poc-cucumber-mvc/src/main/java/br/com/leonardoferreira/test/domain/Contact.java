@@ -22,7 +22,7 @@ public class Contact {
     @GeneratedValue
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "Name can't be empty")
     private String name;
 
     @Embedded
@@ -31,7 +31,7 @@ public class Contact {
     })
     private Phone phone;
 
-    @NotEmpty
+    @NotEmpty(message = "Email can't be empty")
     private String email;
 
     @CreationTimestamp
