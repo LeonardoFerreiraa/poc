@@ -2,6 +2,7 @@ package br.com.leonardoferreira.hello.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
@@ -26,8 +27,7 @@ public class Contact extends BaseDomain {
     private String name;
 
     @NotEmpty(message = "Email não pode ser vazio")
-    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
-        message = "Email deve ser um endereço de email valido.")
+    @Email(message = "Email deve ser um endereço de email valido.")
     private String email;
 
     private String phone;
