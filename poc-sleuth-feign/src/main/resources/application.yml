@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: application
+
+server:
+  port: 7070
+
+application:
+  url: http://localhost:8080
+  allow-propagation: true
