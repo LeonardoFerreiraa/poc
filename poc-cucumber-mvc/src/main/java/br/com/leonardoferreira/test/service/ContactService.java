@@ -12,6 +12,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class ContactService {
+
     @Autowired
     private ContactRepository contactRepository;
 
@@ -22,6 +23,8 @@ public class ContactService {
     }
 
     public void create(Contact contact) {
+        log.info("Method=create, contact={}", contact);
         contactRepository.save(contact);
     }
+
 }

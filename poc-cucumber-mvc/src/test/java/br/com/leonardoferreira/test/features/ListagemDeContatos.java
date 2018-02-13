@@ -42,7 +42,7 @@ public class ListagemDeContatos {
         contacts = contactFactory.create(10);
     }
 
-    @Quando("^o usu·rio realiza a requisiÁ„o para a listagem de contatos$")
+    @Quando("^o usu√°rio realiza a requisi√ß√£o para a listagem de contatos$")
     public void oUsuarioRealizaARequisicaoParaAListagemDeContatos() throws Throwable {
         request = mockMvc.perform(MockMvcRequestBuilders.get("/contacts"))
                 .andDo(MockMvcResultHandlers.print())

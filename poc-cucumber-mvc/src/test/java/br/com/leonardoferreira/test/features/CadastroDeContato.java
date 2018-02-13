@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -37,13 +38,13 @@ public class CadastroDeContato {
 
     private MvcResult response;
 
-    @Dado("^que exista um contato sem todos os dados obrigatórios preenchidos$")
+    @Dado("^que exista um contato sem todos os dados obrigatÃ³rios preenchidos$")
     public void queExistaUmContatoSemTodosOsDadosObrigatoriosPreenchidos() throws Throwable {
         contact = new Contact();
         contact.setPhone(new Phone());
     }
 
-    @Quando("^for feita a requisição para o cadastro de um contato$")
+    @Quando("^for feita a requisiÃ§Ã£o para o cadastro de um contato$")
     public void forFeitaARequisicaoParaOCadastroDeUmContato() throws Throwable {
         MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/contacts");
         post.param("name", contact.getName());
@@ -52,7 +53,7 @@ public class CadastroDeContato {
         response = mockMvc.perform(post).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 
-    @Entao("^o sistema deve retornar erros de validação para o cadastro de contato$")
+    @Entao("^o sistema deve retornar erros de validaÃ§Ã£o para o cadastro de contato$")
     public void oSistemaDeveRetornarErrosDeValidacaoParaOCadastroDeContato() throws Throwable {
         Assertions.assertThat(response).isNotNull();
         ModelAndView modelAndView = response.getModelAndView();
@@ -63,7 +64,10 @@ public class CadastroDeContato {
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result.getObjectName()).isEqualTo("contact");
 
-        System.out.println(response);
+        Assertions.assertThat(result.getAllErrors())
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(2);
     }
 
 }

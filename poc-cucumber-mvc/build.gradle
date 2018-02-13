@@ -35,6 +35,8 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-thymeleaf"
 	compile "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
 
+	compile 'br.com.leonardoferreira:JBacon:1.0.0'
+
 	compile "com.github.javafaker:javafaker:0.13"
 
 	runtime "org.postgresql:postgresql"
