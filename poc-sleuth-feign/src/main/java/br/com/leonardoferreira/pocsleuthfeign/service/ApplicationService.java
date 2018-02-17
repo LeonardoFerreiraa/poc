@@ -23,7 +23,6 @@ public class ApplicationService {
     @Value("${application.allow-propagation}")
     private boolean allowPropagation;
 
-
     public String health(Boolean propagate) {
         log.info("M=health, MSG=method init");
 
