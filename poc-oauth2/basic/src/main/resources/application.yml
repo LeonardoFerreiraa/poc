@@ -1,0 +1,15 @@
+security:
+  user:
+    name: guest
+    password: guest123
+  oauth2:
+    client:
+      client-id: trustedclient
+      client-secret: trustedclient123
+#      authorized-grant-types:
+#        - authorization_code
+#        - authorization_code
+#        - refresh_token
+#        - password
+#      scope:
+#        - openid
