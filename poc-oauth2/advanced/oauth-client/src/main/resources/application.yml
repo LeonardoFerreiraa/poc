@@ -1,0 +1,23 @@
+server:
+  port: 8082
+  session:
+    cookie:
+      name: CLIENT_SESSION
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      client-id: SampleClientId
+      client-secret: secret
+      access-token-uri: http://localhost:8081/oauth/token
+      user-authorization-uri: http://localhost:8081/oauth/authorize
+      scope:
+        - user_info
+      authorized-grant-types:
+        - authorization_code
+    resource:
+      user-info-uri: http://localhost:8081/user/me
+spring:
+  thymeleaf:
+    cache: false
