@@ -1,6 +1,0 @@
-rootProject.name = 'poc-rest-auth'
-
-include 'auth'
-include 'core'
-include 'api'
-
