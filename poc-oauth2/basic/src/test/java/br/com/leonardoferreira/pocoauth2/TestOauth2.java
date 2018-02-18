@@ -22,6 +22,7 @@ public class TestOauth2 {
         resource.setUsername("guest");
         resource.setPassword("guest123");
         resource.setAccessTokenUri("http://localhost:8080/oauth/token");
+
         resource.setClientId("trustedclient");
         resource.setClientSecret("trustedclient123");
         resource.setGrantType("password");

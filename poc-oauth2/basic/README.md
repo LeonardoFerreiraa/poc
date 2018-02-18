@@ -1,0 +1,2 @@
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Basic dHJ1c3RlZGNsaWVudDp0cnVzdGVkY2xpZW50MTIz" \
+"http://localhost:8080/oauth/token?grant_type=password&scope=openid&client_id=trustedclient&client_secret=trustedclient123&username=guest&password=guest123"
