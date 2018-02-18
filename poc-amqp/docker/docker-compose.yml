@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  rabbit1:
+    image: rabbitmq:management
+    hostname: rabbit1
+    networks:
+      vpcbr:
+        ipv4_address: 10.6.0.2
+
+  rabbit2:
+    image: rabbitmq:management
+    hostname: rabbit2
+    networks:
+      vpcbr:
+        ipv4_address: 10.6.0.3
+    links:
+      - rabbit1
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.6.0.0/16
+          gateway: 10.6.0.1

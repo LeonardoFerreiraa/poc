@@ -1,0 +1,3 @@
+spring:
+  rabbitmq:
+    addresses: 10.6.0.2:5672,10.6.0.3:5672
