@@ -42,4 +42,5 @@ public class Contact {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private String answerableUser;
 }

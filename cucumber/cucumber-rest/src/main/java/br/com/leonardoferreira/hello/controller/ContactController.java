@@ -52,4 +52,5 @@ public class ContactController {
         contactService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 }

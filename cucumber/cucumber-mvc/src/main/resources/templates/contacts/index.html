@@ -3,17 +3,29 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layouts/application">
     <th:block layout:fragment="content">
+        <div>
+            <a th:href="@{/contacts/new}" class="btn btn-default">Novo contato</a>
+        </div>
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="contact : ${contacts}">
                     <td th:text="${contact.id}"></td>
                     <td th:text="${contact.name}"></td>
+                    <td th:text="${contact.email}"></td>
+                    <td th:text="${contact.phone?.number}"></td>
+                    <td>
+                        <a th:href="@{/contacts/edit/{id}(id=${contact.id})}" class="btn btn-sm btn-info">Editar</a>
+                        <a th:href="@{/contacts/{id}(id=${contact.id})}" data-method="DELETE" data-confirm="Tem certeza" class="btn btn-sm btn-info">Remover</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

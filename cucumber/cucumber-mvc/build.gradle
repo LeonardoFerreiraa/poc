@@ -27,17 +27,13 @@ repositories {
 	maven { url "https://repo.spring.io/milestone" }
 }
 
-
 dependencies {
 	compile "org.springframework.boot:spring-boot-starter-data-jpa"
 	compile "org.springframework.boot:spring-boot-starter-web"
+	compile "org.springframework.boot:spring-boot-starter-security"
 
 	compile "org.springframework.boot:spring-boot-starter-thymeleaf"
 	compile "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
-
-	compile 'br.com.leonardoferreira:JBacon:1.0.0'
-
-	compile "com.github.javafaker:javafaker:0.13"
 
 	runtime "org.postgresql:postgresql"
 	compileOnly "org.projectlombok:lombok"
@@ -47,4 +43,6 @@ dependencies {
 	testCompile "info.cukes:cucumber-spring:1.2.4"
 	testCompile "org.springframework.boot:spring-boot-starter-test"
 	testCompile "com.h2database:h2"
+	testCompile "br.com.leonardoferreira:JBacon:1.0.1"
+	testCompile "com.github.javafaker:javafaker:0.13"
 }
