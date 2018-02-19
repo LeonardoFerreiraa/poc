@@ -1,4 +1,5 @@
 #language: pt
+
 Funcionalidade: listagem de contatos
   Cenário: O usuário deseja ver todos os contatos salvos no sistema
     Dado contatos salvo no banco de dados

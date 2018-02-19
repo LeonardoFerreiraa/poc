@@ -3,6 +3,7 @@ package br.com.leonardoferreira.test.features;
 import br.com.leonardoferreira.test.Application;
 import br.com.leonardoferreira.test.TestConfig;
 import br.com.leonardoferreira.test.domain.Contact;
+import br.com.leonardoferreira.test.factory.AccountFactory;
 import br.com.leonardoferreira.test.factory.ContactFactory;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Entao;
@@ -11,16 +12,20 @@ import org.assertj.core.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,6 +34,9 @@ public class ListagemDeContatos {
 
     @Autowired
     private ContactFactory contactFactory;
+
+    @Autowired
+    private AccountFactory accountFactory;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,7 +52,10 @@ public class ListagemDeContatos {
 
     @Quando("^o usuário realiza a requisição para a listagem de contatos$")
     public void oUsuarioRealizaARequisicaoParaAListagemDeContatos() throws Throwable {
-        request = mockMvc.perform(MockMvcRequestBuilders.get("/contacts"))
+        MockHttpServletRequestBuilder get = MockMvcRequestBuilders.get("/contacts");
+        get.with(accountFactory.authenticatedUser());
+
+        request = mockMvc.perform(get)
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }

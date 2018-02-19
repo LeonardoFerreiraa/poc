@@ -45,4 +45,5 @@ dependencies {
 	testCompile "com.h2database:h2"
 	testCompile "br.com.leonardoferreira:JBacon:1.0.1"
 	testCompile "com.github.javafaker:javafaker:0.13"
+    testCompile "org.springframework.security:spring-security-test"
 }

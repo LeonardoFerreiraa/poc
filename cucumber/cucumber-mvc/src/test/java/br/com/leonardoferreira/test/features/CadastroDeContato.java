@@ -4,14 +4,20 @@ import br.com.leonardoferreira.test.Application;
 import br.com.leonardoferreira.test.TestConfig;
 import br.com.leonardoferreira.test.domain.Contact;
 import br.com.leonardoferreira.test.domain.Phone;
+import br.com.leonardoferreira.test.exception.ContactNotFound;
+import br.com.leonardoferreira.test.factory.AccountFactory;
 import br.com.leonardoferreira.test.factory.ContactFactory;
+import br.com.leonardoferreira.test.repository.ContactRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Entao;
+import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
 import org.assertj.core.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +38,12 @@ public class CadastroDeContato {
     private ContactFactory contactFactory;
 
     @Autowired
+    private AccountFactory accountFactory;
+
+    @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
     private MockMvc mockMvc;
 
     private Contact contact;
@@ -50,6 +62,7 @@ public class CadastroDeContato {
         post.param("name", contact.getName());
         post.param("email", contact.getEmail());
         post.param("phone.number", contact.getPhone().getNumber());
+        post.with(accountFactory.authenticatedUser());
         response = mockMvc.perform(post).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 
@@ -67,7 +80,35 @@ public class CadastroDeContato {
         Assertions.assertThat(result.getAllErrors())
                 .isNotNull()
                 .isNotEmpty()
-                .hasSize(2);
+                .hasSize(3);
     }
 
+    @Dado("^que exista um contato com todos os dados obrigatórios preenchidos$")
+    public void queExistaUmContatoComTodosOsDadosObrigatoriosPreenchidos() throws Throwable {
+        contact = contactFactory.build();
+    }
+
+    @Então("^o sistema deve cadastrar o contato com sucesso$")
+    public void oSistemaDeveCadastrarOContatoComSucesso() throws Throwable {
+        Assertions.assertThat(response).isNotNull();
+        ModelAndView modelAndView = response.getModelAndView();
+
+        Assertions.assertThat(modelAndView.getViewName())
+                .isEqualTo("redirect:/contacts");
+
+        Assertions.assertThat(contactRepository.count())
+                .isEqualTo(1);
+        Contact dbContact = contactRepository.findById(1L)
+                .orElseThrow(ContactNotFound::new);
+
+        Assertions.assertThat(dbContact.getName())
+                .isEqualTo(contact.getName());
+
+        Assertions.assertThat(dbContact.getEmail())
+                .isEqualTo(contact.getEmail());
+
+        Assertions.assertThat(dbContact.getAnswerableUser())
+                .isEqualTo(accountFactory.getCurrentUser().getUsername());
+
+    }
 }
