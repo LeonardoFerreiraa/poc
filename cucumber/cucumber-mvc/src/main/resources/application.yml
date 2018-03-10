@@ -1,6 +1,10 @@
+logging:
+  file: application.log
 spring:
+  application:
+    name: poc-cucumber-mvc
   datasource:
-    url: jdbc:postgresql://localhost:5432/hello
+    url: jdbc:postgresql://localhost:5432/poc_cucumber_mvc
     username: lferreira
     password: 123123
   jpa:
