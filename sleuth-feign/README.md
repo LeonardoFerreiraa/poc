@@ -20,5 +20,5 @@ java -jar  -Dspring.application.name=application2 -Dapplication.url=http://local
 java -jar  -Dspring.application.name=application3 -Dapplication.url=http://localhost:8080 -Dapplication.allow-propagation=false -Dserver.port=7070 poc-sleuth-feign-0.0.1-SNAPSHOT.jar
 ```
 
-![Example image](/poc-sleuth-feign/img/sleuth.png)
+![Example image](/poc/sleuth-feign/img/sleuth.png)
 
