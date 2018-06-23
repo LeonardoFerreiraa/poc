@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 
-@Mapper(uses = { TitleTranslator.class })
+@Mapper(uses = { TitleTranslator.class }, componentModel = "spring")
 public interface UserMapper {
 
     @Mappings({

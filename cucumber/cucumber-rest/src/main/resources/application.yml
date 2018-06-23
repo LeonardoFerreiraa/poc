@@ -1,12 +1,8 @@
 spring:
-  application:
-    name: poc-cucumber-mvc
   datasource:
-    url: jdbc:postgresql://localhost:5432/poc_cucumber_mvc
+    url: jdbc:postgresql://localhost:5432/hello
     username: lferreira
     password: 123123
-  hikari:
-    maximum-pool-size: 10
   jpa:
     hibernate:
       ddl-auto: update

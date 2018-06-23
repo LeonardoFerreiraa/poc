@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = "2.0.0.RELEASE"
+        springBootVersion = "2.0.3.RELEASE"
     }
     repositories {
         mavenCentral()
@@ -11,23 +11,16 @@ buildscript {
 }
 
 apply plugin: "java"
-apply plugin: "eclipse"
 apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 
-group = "br.com.leonardoferreira"
-version = "0.0.1-SNAPSHOT"
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
-  	maven { url "https://repo.spring.io/milestone" }
 }
 
 ext {
-    springCloudVersion = 'Finchley.M8'
+    springCloudVersion = "Finchley.RELEASE"
 }
-
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
@@ -37,7 +30,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-thymeleaf"
     compile "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
 
-    compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+    compile "org.springframework.cloud:spring-cloud-starter-sleuth"
 
     runtime "org.postgresql:postgresql"
     compileOnly "org.projectlombok:lombok"

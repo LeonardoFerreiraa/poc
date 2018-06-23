@@ -13,8 +13,7 @@ public class LogAspect {
 
     @Before("within(br.com.leonardoferreira.poc.service.*)")
     public void before(JoinPoint joinPoint) {
-        String className = joinPoint.getSignature()
-            .getDeclaringType().getSimpleName();
+        String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         String fullName = className + "#" + methodName;
 

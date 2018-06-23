@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BenchMarkService {
+
     @Autowired
     private BenchMarkRepository benchMarkRepository;
+
     public void create(String methodName, Long executionTime) {
         BenchMark benchMark = new BenchMark();
         benchMark.setExecutionTime(executionTime);
@@ -16,4 +18,5 @@ public class BenchMarkService {
 
         benchMarkRepository.save(benchMark);
     }
+
 }

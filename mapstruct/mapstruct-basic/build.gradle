@@ -1,11 +1,9 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.0.M7'
+		springBootVersion = '2.0.3.RELEASE'
 	}
 	repositories {
 		mavenCentral()
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -13,20 +11,12 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'br.com.leonardoferreira.poc'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
 repositories {
 	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
-	maven { url "https://repo.spring.io/milestone" }
 }
-
 
 dependencies {
 	compile "org.springframework.boot:spring-boot-starter-data-jpa"
@@ -34,16 +24,13 @@ dependencies {
 	compile "org.projectlombok:lombok"
 	compile "org.postgresql:postgresql"
 
+	compile "io.springfox:springfox-swagger2:2.8.0"
+	compile "io.springfox:springfox-swagger-ui:2.8.0"
+
 	compile "org.mapstruct:mapstruct-jdk8:1.2.0.Final"
 	compile "org.mapstruct:mapstruct-processor:1.2.0.Final"
 
     compile "com.github.javafaker:javafaker:0.13"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
-}
-
-compileJava {
-    options.compilerArgs = [
-        '-Amapstruct.defaultComponentModel=spring'
-    ]
 }
