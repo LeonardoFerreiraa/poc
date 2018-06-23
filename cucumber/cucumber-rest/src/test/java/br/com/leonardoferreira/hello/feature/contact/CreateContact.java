@@ -54,7 +54,8 @@ public class CreateContact {
     public void oContatoÉSalvoNoBancoDeDados() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         Assertions.assertThat(contactRepository.count()).isEqualTo(1);
-        final Contact dbContact = contactRepository.findOne(1L);
+        final Contact dbContact = contactRepository.findById(1L).orElse(null);
+        Assertions.assertThat(dbContact).isNotNull();
         Assertions.assertThat(dbContact.getName()).isEqualTo(contact.getName());
         Assertions.assertThat(dbContact.getEmail()).isEqualTo(contact.getEmail());
         Assertions.assertThat(dbContact.getPhone()).isEqualTo(contact.getPhone());

@@ -63,7 +63,7 @@ public class UpdateContact {
     @Então("o contato é atualizado no banco de dados")
     public void oContatoÉAtualizadoNoBancoDeDados() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-        Contact dbContact = contactRepository.findOne(1L);
+        Contact dbContact = contactRepository.findById(1L).orElse(null);
         Assertions.assertThat(dbContact).isNotNull();
         Assertions.assertThat(dbContact.getName()).isEqualTo(contact.getName());
         Assertions.assertThat(dbContact.getEmail()).isEqualTo(contact.getEmail());
@@ -80,7 +80,7 @@ public class UpdateContact {
     @Então("o sistema deve retornar erros de validacao para a alteração de contato")
     public void oSistemaDeveRetornarErrosDeValidacaoParaAAlteraçãoDeContato() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        Contact one = contactRepository.findOne(1L);
+        Contact one = contactRepository.findById(1L).orElse(null);
         Assertions.assertThat(one).isNotNull();
         Assertions.assertThat(dbContact.getName()).isEqualTo(one.getName());
         Assertions.assertThat(dbContact.getEmail()).isEqualTo(one.getEmail());

@@ -1,11 +1,7 @@
 package br.com.leonardoferreira.hello.factory;
 
 import br.com.leonardoferreira.hello.domain.Contact;
-import br.com.leonardoferreira.hello.repository.ContactRepository;
-import br.com.leonardoferreira.jbacon.JBacon;
 import com.github.javafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -14,10 +10,7 @@ import java.util.Locale;
  * Created by lferreira on 7/1/17.
  */
 @Component
-public class ContactFactory extends JBacon<Contact> {
-
-    @Autowired
-    private ContactRepository contactRepository;
+public class ContactFactory extends SpringDataFactory<Contact> {
 
     @Override
     public Contact getDefault() {
@@ -34,8 +27,4 @@ public class ContactFactory extends JBacon<Contact> {
         return new Contact();
     }
 
-    @Override
-    public void persist(Contact contact) {
-        contactRepository.save(contact);
-    }
 }

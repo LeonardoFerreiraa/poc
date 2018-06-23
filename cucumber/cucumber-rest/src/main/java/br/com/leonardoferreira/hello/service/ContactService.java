@@ -21,7 +21,8 @@ public class ContactService {
     }
 
     public Contact findOne(Long id) {
-        return contactRepository.findOne(id);
+        return contactRepository.findById(id)
+                .orElse(null);
     }
 
     public void save(Contact contact) {
@@ -29,7 +30,7 @@ public class ContactService {
     }
 
     public void delete(Long id) {
-        contactRepository.delete(id);
+        contactRepository.deleteById(id);
     }
 
 }
