@@ -1,0 +1,15 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+
+feign:
+  hystrix:
+    enabled: true
