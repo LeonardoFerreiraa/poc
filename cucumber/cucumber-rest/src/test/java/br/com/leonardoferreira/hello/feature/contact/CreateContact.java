@@ -2,6 +2,7 @@ package br.com.leonardoferreira.hello.feature.contact;
 
 import br.com.leonardoferreira.hello.domain.Contact;
 import br.com.leonardoferreira.hello.factory.ContactFactory;
+import br.com.leonardoferreira.hello.feature.BaseStepDef;
 import br.com.leonardoferreira.hello.repository.ContactRepository;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
@@ -21,16 +22,10 @@ import java.util.Map;
 /**
  * Created by lferreira on 7/1/17.
  */
-@ContextConfiguration
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CreateContact {
+public class CreateContact extends BaseStepDef {
 
     @Autowired
     private ContactFactory contactFactory;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Autowired
     private ContactRepository contactRepository;
@@ -45,13 +40,13 @@ public class CreateContact {
     }
 
     @Quando("o usuário faz uma requisição para cadastro de contato")
-    public void oUsuárioFazUmaRequisiçãoParaCadastroDeContato() {
+    public void oUsuarioFazUmaRequisicaoParaCadastroDeContato() {
         Assertions.assertThat(contactRepository.count()).isEqualTo(0);
         response = restTemplate.postForEntity("/api/v1/contacts", contact, Map.class);
     }
 
     @Então("o contato é salvo no banco de dados")
-    public void oContatoÉSalvoNoBancoDeDados() {
+    public void oContatoESalvoNoBancoDeDados() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         Assertions.assertThat(contactRepository.count()).isEqualTo(1);
         final Contact dbContact = contactRepository.findById(1L).orElse(null);

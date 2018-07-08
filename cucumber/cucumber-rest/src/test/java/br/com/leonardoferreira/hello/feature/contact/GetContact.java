@@ -2,6 +2,7 @@ package br.com.leonardoferreira.hello.feature.contact;
 
 import br.com.leonardoferreira.hello.domain.Contact;
 import br.com.leonardoferreira.hello.factory.ContactFactory;
+import br.com.leonardoferreira.hello.feature.BaseStepDef;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
@@ -17,15 +18,10 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * Created by lferreira on 7/1/17.
  */
-@ContextConfiguration
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GetContact {
-    @Autowired
-    private ContactFactory contactFactory;
+public class GetContact extends BaseStepDef {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private ContactFactory contactFactory;
 
     private ResponseEntity<Contact> response;
 
@@ -37,12 +33,12 @@ public class GetContact {
     }
 
     @Quando("o usuário realiza a requisição para a busca de contato")
-    public void oUsuárioRealizaARequisiçãoParaABuscaDeContato() {
+    public void oUsuarioRealizaARequisicaoParaABuscaDeContato() {
         response = restTemplate.getForEntity("/api/v1/contacts/1", Contact.class);
     }
 
     @Então("o sistema deve retorna o usuário cadastrado no banco de dados")
-    public void oSistemaDeveRetornaOUsuárioCadastradoNoBancoDeDados() {
+    public void oSistemaDeveRetornaOUsuarioCadastradoNoBancoDeDados() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody()).isNotNull();
         Assertions.assertThat(response.getBody().getName()).isEqualTo(contact.getName());
@@ -52,7 +48,7 @@ public class GetContact {
     }
 
     @Então("o sistema deve retornar mensagem de erro dizendo que o contato não existe")
-    public void oSistemaDeveRetornarMensagemDeErroDizendoQueOContatoNãoExiste() {
+    public void oSistemaDeveRetornarMensagemDeErroDizendoQueOContatoNaoExiste() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

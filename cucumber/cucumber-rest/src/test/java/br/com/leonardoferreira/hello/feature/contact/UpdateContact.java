@@ -2,6 +2,7 @@ package br.com.leonardoferreira.hello.feature.contact;
 
 import br.com.leonardoferreira.hello.domain.Contact;
 import br.com.leonardoferreira.hello.factory.ContactFactory;
+import br.com.leonardoferreira.hello.feature.BaseStepDef;
 import br.com.leonardoferreira.hello.repository.ContactRepository;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
@@ -21,16 +22,10 @@ import java.util.Map;
 /**
  * Created by lferreira on 7/1/17.
  */
-@ContextConfiguration
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UpdateContact {
+public class UpdateContact extends BaseStepDef {
 
     @Autowired
     private ContactFactory contactFactory;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Autowired
     private ContactRepository contactRepository;
@@ -42,18 +37,18 @@ public class UpdateContact {
     private ResponseEntity<Map> response;
 
     @Dado("dados validos para alteração de um contato")
-    public void dadosValidosParaAlteraçãoDeUmContato() {
+    public void dadosValidosParaAlteracaoDeUmContato() {
         contact = contactFactory.build();
     }
 
     @E("um contato já salvo no banco de dados pronto para alteração")
-    public void umContatoJáSalvoNoBancoDeDadosProntoParaAlteração() {
+    public void umContatoJaSalvoNoBancoDeDadosProntoParaAlteracao() {
         dbContact = contactFactory.create();
         contact.setId(dbContact.getId());
     }
 
     @Quando("o usuário faz uma requisição para alteração de contato")
-    public void oUsuárioFazUmaRequisiçãoParaAlteraçãoDeContato() {
+    public void oUsuarioFazUmaRequisicaoParaAlteracaoDeContato() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Contact> entity = new HttpEntity<Contact>(contact, headers);
@@ -61,7 +56,7 @@ public class UpdateContact {
     }
 
     @Então("o contato é atualizado no banco de dados")
-    public void oContatoÉAtualizadoNoBancoDeDados() {
+    public void oContatoEAtualizadoNoBancoDeDados() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         Contact dbContact = contactRepository.findById(1L).orElse(null);
         Assertions.assertThat(dbContact).isNotNull();
@@ -71,14 +66,14 @@ public class UpdateContact {
     }
 
     @Dado("dados invalidos para alteração de um contato")
-    public void dadosInvalidosParaAlteraçãoDeUmContato() {
+    public void dadosInvalidosParaAlteracaoDeUmContato() {
         contact = new Contact();
         contact.setEmail("invalid");
     }
 
     @SuppressWarnings("unchecked")
     @Então("o sistema deve retornar erros de validacao para a alteração de contato")
-    public void oSistemaDeveRetornarErrosDeValidacaoParaAAlteraçãoDeContato() {
+    public void oSistemaDeveRetornarErrosDeValidacaoParaAAlteracaoDeContato() {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         Contact one = contactRepository.findById(1L).orElse(null);
         Assertions.assertThat(one).isNotNull();

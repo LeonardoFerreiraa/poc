@@ -2,6 +2,7 @@ package br.com.leonardoferreira.hello.feature.contact;
 
 import br.com.leonardoferreira.hello.domain.Contact;
 import br.com.leonardoferreira.hello.factory.ContactFactory;
+import br.com.leonardoferreira.hello.feature.BaseStepDef;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
@@ -20,16 +21,10 @@ import java.util.List;
 /**
  * Created by lferreira on 7/1/17.
  */
-@ContextConfiguration
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ContactIndex {
+public class ContactIndex extends BaseStepDef {
 
     @Autowired
     private ContactFactory contactFactory;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     private ResponseEntity<Contact[]> response;
 
@@ -41,7 +36,7 @@ public class ContactIndex {
     }
 
     @Quando("o usuário realiza a requisição para a listagem de contatos")
-    public void oUsuárioRealizaARequisiçãoParaAListagemDeContatos() {
+    public void oUsuarioRealizaARequisicaoParaAListagemDeContatos() {
         response = restTemplate.getForEntity("/api/v1/contacts", Contact[].class);
     }
 
