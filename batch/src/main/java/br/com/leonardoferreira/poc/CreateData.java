@@ -11,9 +11,9 @@ public class CreateData implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        StringBuilder sb = new StringBuilder("externalId,customStr,customIgnoredProperty,customIgnoredProperty2\n");
+        StringBuilder sb = new StringBuilder("externalId,customIgnoredProperty,customStr,customIgnoredProperty2\n");
         for (int i = 0; i < 300000; i++) {
-            sb.append(String.format("%d,str-%d,customIgnoredProperty-%d,customIgnoredProperty-%d", i, i, i, i))
+            sb.append(String.format("%d,str-%d,customIgnoredProperty-%d,customIgnoredProperty2-%d", i, i, i, i))
                     .append("\n");
         }
         FileOutputStream outputStream = new FileOutputStream("/home/lferreira/bla.csv");

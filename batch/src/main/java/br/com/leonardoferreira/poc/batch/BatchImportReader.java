@@ -1,37 +1,66 @@
 package br.com.leonardoferreira.poc.batch;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Iterator;
+
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @StepScope
-public class BatchImportReader extends FlatFileItemReader<BatchImportItem> implements InitializingBean {
+public class BatchImportReader implements ItemReader<BatchImportItem>, InitializingBean {
 
     @Value("#{jobParameters[fileName]}")
     private String fileName;
 
+    private CSVParser csvParser;
+
+    private Iterator<CSVRecord> it;
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames("externalId", "customStr",
-                "customIgnoredProperty", "customIgnoredProperty2");
+        Resource resource = new FileSystemResource(fileName);
+        Reader reader = Files.newBufferedReader(Paths.get(resource.getURI()));
 
-        BeanWrapperFieldSetMapper<BatchImportItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(BatchImportItem.class);
+        CSVFormat format = CSVFormat.DEFAULT
+                .withHeader("externalId", "customStr", "customIgnoredProperty", "customIgnoredProperty2")
+                .withFirstRecordAsHeader();
 
-        DefaultLineMapper<BatchImportItem> lineMapper = new DefaultLineMapper<>();
-        lineMapper.setLineTokenizer(lineTokenizer);
-        lineMapper.setFieldSetMapper(fieldSetMapper);
+        csvParser = new CSVParser(reader, format);
+        it = csvParser.getRecords().iterator();
+    }
 
-        setLineMapper(lineMapper);
-        setResource(new FileSystemResource(fileName));
-        setLinesToSkip(1);
+    @Override
+    public BatchImportItem read() throws Exception {
+        if (it.hasNext()) {
+            CSVRecord next = it.next();
+            return BatchImportItem.builder()
+                    .externalId(Long.parseLong(next.get("externalId")))
+                    .customStr(next.get("customStr"))
+                    .customIgnoredProperty(next.get("customIgnoredProperty"))
+                    .customIgnoredProperty2(next.get("customIgnoredProperty2"))
+                    .build();
+        }
+
+        try {
+            csvParser.close();
+        } catch (IOException e) {
+            log.info("Method=read, E=", e.getMessage());
+        }
+        return null;
     }
 }
