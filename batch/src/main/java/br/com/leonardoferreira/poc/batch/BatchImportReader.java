@@ -1,23 +1,20 @@
 package br.com.leonardoferreira.poc.batch;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Iterator;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Iterator;
 
 @Slf4j
 @Component
@@ -33,21 +30,20 @@ public class BatchImportReader implements ItemReader<BatchImportItem>, Initializ
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Resource resource = new FileSystemResource(fileName);
-        Reader reader = Files.newBufferedReader(Paths.get(resource.getURI()));
+        Reader reader = Files.newBufferedReader(Paths.get(new FileSystemResource(fileName).getURI()));
 
         CSVFormat format = CSVFormat.DEFAULT
                 .withHeader("externalId", "customStr", "customIgnoredProperty", "customIgnoredProperty2")
                 .withFirstRecordAsHeader();
 
         csvParser = new CSVParser(reader, format);
-        it = csvParser.getRecords().iterator();
+        it = csvParser.iterator();
     }
 
     @Override
     public BatchImportItem read() throws Exception {
-        if (it.hasNext()) {
-            CSVRecord next = it.next();
+        CSVRecord next = getNext();
+        if (next != null) {
             return BatchImportItem.builder()
                     .externalId(Long.parseLong(next.get("externalId")))
                     .customStr(next.get("customStr"))
@@ -56,11 +52,11 @@ public class BatchImportReader implements ItemReader<BatchImportItem>, Initializ
                     .build();
         }
 
-        try {
-            csvParser.close();
-        } catch (IOException e) {
-            log.info("Method=read, E=", e.getMessage());
-        }
+        csvParser.close();
         return null;
+    }
+
+    private synchronized CSVRecord getNext() {
+        return it.hasNext() ? it.next() : null;
     }
 }
