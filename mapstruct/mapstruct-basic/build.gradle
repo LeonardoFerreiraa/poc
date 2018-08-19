@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.3.RELEASE'
+		springBootVersion = '2.0.4.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -30,7 +30,7 @@ dependencies {
 	compile "org.mapstruct:mapstruct-jdk8:1.2.0.Final"
 	compile "org.mapstruct:mapstruct-processor:1.2.0.Final"
 
-    compile "com.github.javafaker:javafaker:0.13"
+    compile "com.github.javafaker:javafaker:0.15"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

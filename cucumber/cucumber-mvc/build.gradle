@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = "2.0.3.RELEASE"
+        springBootVersion = "2.0.4.RELEASE"
     }
     repositories {
         mavenCentral()
@@ -19,7 +19,7 @@ repositories {
 }
 
 ext {
-    springCloudVersion = "Finchley.RELEASE"
+    springCloudVersion = "Finchley.SR1"
 }
 
 dependencies {
@@ -33,15 +33,15 @@ dependencies {
     compile "org.springframework.cloud:spring-cloud-starter-sleuth"
 
     runtime "org.postgresql:postgresql"
-    compileOnly "org.projectlombok:lombok"
+    compile "org.projectlombok:lombok"
 
     testCompile "info.cukes:cucumber-java:1.2.4"
     testCompile "info.cukes:cucumber-junit:1.2.4"
     testCompile "info.cukes:cucumber-spring:1.2.4"
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "com.h2database:h2"
-    testCompile "br.com.leonardoferreira:JBacon:1.0.1"
-    testCompile "com.github.javafaker:javafaker:0.13"
+    testCompile "br.com.leonardoferreira:JBacon:1.1.2"
+    testCompile "com.github.javafaker:javafaker:0.15"
     testCompile "org.springframework.security:spring-security-test"
 }
 
