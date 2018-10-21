@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 public class FirstQueueConsumer {
 
     @SneakyThrows
-    @RabbitListener(queues = FirstQueueConfig.QUEUE_NAME,
-            containerFactory = FirstQueueConfig.CONTAINER_FACTORY)
+    @RabbitListener(queues = FirstQueueConfig.QUEUE_NAME, containerFactory = "firstQueueContainerFactory")
     public void receiveMessage(@Payload StatusMessage body) {
         log.info("Method=receiveMessage, message={}", body);
         if (body.getStatus().equals("nok")) {

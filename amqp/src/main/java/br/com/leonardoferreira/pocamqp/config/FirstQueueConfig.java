@@ -11,33 +11,21 @@ import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
 @Configuration
 public class FirstQueueConfig {
 
     public static final String QUEUE_NAME = "first_queue";
 
-    public static final String CONTAINER_FACTORY = "firstQueueContainerFactory";
-
     private static final String EXCHANGE_NAME = "first_queue_exchange";
 
     private static final String DLQ_NAME = "first_queue_dlq";
 
-    private static final String QUEUE = "firstQueue";
-
-    private static final String EXCHANGE = "firstQueueExchange";
-
-    private static final String BINDING = "firstQueueBinding";
-
-    private static final String DLQ = "firstQueueDlq";
-
-    private static final String BINDING_DLQ = "firstQueueBingingDlq";
-
-    @Bean(QUEUE)
-    public Queue queue() {
+    @Bean
+    public Queue firstQueue() {
         return QueueBuilder
                 .durable(QUEUE_NAME)
                 .withArgument("x-dead-letter-exchange", EXCHANGE_NAME)
@@ -45,48 +33,52 @@ public class FirstQueueConfig {
                 .build();
     }
 
-    @Bean(EXCHANGE)
-    public Exchange exchange() {
+    @Bean
+    public Exchange firstQueueExchange() {
         return ExchangeBuilder
                 .topicExchange(EXCHANGE_NAME)
                 .build();
     }
 
-    @Bean(BINDING)
-    public Binding binding(@Qualifier(QUEUE) Queue queue, @Qualifier(EXCHANGE) TopicExchange exchange) {
+    @Bean
+    public Binding firstQueueBinding(Queue firstQueue, TopicExchange firstQueueExchange) {
         return BindingBuilder
-                .bind(queue)
-                .to(exchange)
+                .bind(firstQueue)
+                .to(firstQueueExchange)
                 .with("");
     }
 
-    @Bean(DLQ)
-    public Queue dlq() {
+    @Bean
+    public Queue firstQueueDlq() {
         return QueueBuilder
                 .durable(DLQ_NAME)
                 .build();
     }
 
-    @Bean(BINDING_DLQ)
-    public Binding bindingDlq(@Qualifier(DLQ) Queue queue, @Qualifier(EXCHANGE) TopicExchange topicExchange) {
+    @Bean
+    public Binding firstQueueBindingDlq(Queue firstQueueDlq, TopicExchange firstQueueExcahnge) {
         return BindingBuilder
-                .bind(queue)
-                .to(topicExchange)
+                .bind(firstQueueDlq)
+                .to(firstQueueExcahnge)
                 .with(DLQ_NAME);
     }
 
-    @Bean(CONTAINER_FACTORY)
-    public SimpleRabbitListenerContainerFactory containerFactory(ConnectionFactory connectionFactory) {
+    @Bean
+    public SimpleRabbitListenerContainerFactory firstQueueContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setAdviceChain(RetryInterceptorBuilder
+        factory.setAdviceChain(retryAdvice());
+        factory.setConcurrentConsumers(5);
+        return factory;
+    }
+
+    private RetryOperationsInterceptor retryAdvice() {
+        return RetryInterceptorBuilder
                 .stateless()
                 .maxAttempts(3)
                 .backOffOptions(3_000, 2, 9_000)
                 .recoverer(new RejectAndDontRequeueRecoverer())
-                .build());
-        factory.setConcurrentConsumers(5);
-        return factory;
+                .build();
     }
 
 }
