@@ -7,8 +7,6 @@ management:
   endpoint:
     health:
       show-details: always
-  security:
-    enabled: false
 
 feign:
   hystrix:

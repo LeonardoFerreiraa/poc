@@ -4,10 +4,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.stereotype.Service;
 
-/**
- * @author s2it_leferreira
- * @since 25/06/18 16:57
- */
 @Service
 public class TestService5 {
 
