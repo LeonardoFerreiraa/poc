@@ -3,11 +3,10 @@ package br.com.leonardoferreira.poc.hystrix.service;
 import br.com.leonardoferreira.poc.hystrix.exception.FallbackException;
 import br.com.leonardoferreira.poc.hystrix.exception.OperationException;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestService3 {
+public class ExceptionThrowInFallback {
 
     @HystrixCommand(fallbackMethod = "fallback")
     public String operation() {

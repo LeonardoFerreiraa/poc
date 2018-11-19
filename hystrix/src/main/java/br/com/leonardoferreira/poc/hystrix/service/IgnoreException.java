@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestService4 {
+public class IgnoreException {
     @HystrixCommand(fallbackMethod = "fallback", ignoreExceptions = RuntimeException.class)
     public String operation() {
         throw new RuntimeException();

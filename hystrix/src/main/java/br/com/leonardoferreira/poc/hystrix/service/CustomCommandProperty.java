@@ -5,7 +5,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestService5 {
+public class CustomCommandProperty {
 
     @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10")

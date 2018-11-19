@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @DefaultProperties(defaultFallback = "fallback")
-public class TestService6 {
+public class CustomDefaultProperties {
 
     @HystrixCommand
     public String operation() {

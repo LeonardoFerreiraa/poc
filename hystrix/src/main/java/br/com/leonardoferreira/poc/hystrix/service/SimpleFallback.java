@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestService1 {
+public class SimpleFallback {
 
     @HystrixCommand(fallbackMethod = "fallback")
     public String operation(String name) {
