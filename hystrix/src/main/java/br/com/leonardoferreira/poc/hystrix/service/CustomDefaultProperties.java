@@ -13,7 +13,7 @@ public class CustomDefaultProperties {
         throw new RuntimeException();
     }
 
-    public String fallback() {
+    private String fallback() {
         return "fallback";
     }
 }
