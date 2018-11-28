@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class CustomConfig {
+public class ReactorFeignConfig {
 
     @Bean
     @Scope("prototype")
-    public Feign.Builder builder(CustomContract customContract) {
+    public Feign.Builder builder(ReactorContract reactorContract) {
         return Feign.builder()
-                .contract(customContract)
+                .contract(reactorContract)
                 .invocationHandlerFactory(ReactorInvocationHandler::new);
     }
 

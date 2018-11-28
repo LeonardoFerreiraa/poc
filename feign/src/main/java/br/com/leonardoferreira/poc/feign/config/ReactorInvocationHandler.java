@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -40,6 +41,15 @@ public class ReactorInvocationHandler implements InvocationHandler {
                     sink.success(dispatch.get(method).invoke(args));
                 } catch (Throwable throwable) {
                     sink.error(throwable);
+                }
+            }).subscribeOn(Schedulers.parallel());
+        } else if (Flux.class.isAssignableFrom(method.getReturnType())) {
+            return Flux.create(emitter -> {
+                try {
+                    emitter.next(dispatch.get(method).invoke(args));
+                    emitter.complete();
+                } catch (Throwable throwable) {
+                    emitter.error(throwable);
                 }
             }).subscribeOn(Schedulers.parallel());
         } else {

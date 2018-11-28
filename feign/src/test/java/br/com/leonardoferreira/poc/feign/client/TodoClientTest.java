@@ -1,5 +1,6 @@
 package br.com.leonardoferreira.poc.feign.client;
 
+import java.util.concurrent.TimeUnit;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import reactor.core.Disposable;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -19,15 +21,17 @@ public class TodoClientTest {
     @Test
     @SneakyThrows
     void retrieveAll() {
-        todoClient.findAll()
+        Disposable firstFind = todoClient.findAll()
                 .subscribe(todos -> {
-                    todos.forEach(todo -> log.info("primeiro -> {}",  todo));
+                    todos.forEach(todo -> log.info("primeiro -> {}", todo));
                 });
-        todoClient.findAll()
+        Disposable secondFind = todoClient.findAll()
                 .subscribe(todos -> {
-                    todos.forEach(todo -> log.info("segundo -> {}",  todo));
+                    todos.forEach(todo -> log.info("segundo -> {}", todo));
                 });
 
-        Thread.sleep(5000);
+        do {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+        } while (!firstFind.isDisposed() && !secondFind.isDisposed());
     }
 }
