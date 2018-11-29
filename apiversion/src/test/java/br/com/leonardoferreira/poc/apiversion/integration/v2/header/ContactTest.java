@@ -13,23 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ContactTest extends BaseIntegrationTest {
 
     @Test
-    void customHeaderTest() {
-        // @formatter:off
-        RestAssured
-                .given()
-                    .log().all()
-                    .header("Api-Version", 2)
-                .when()
-                    .get("/contacts")
-                .then()
-                    .log().all()
-                    .body("$", Matchers.hasSize(2))
-                    .body("[0].fullName", Matchers.is("Foo Silva"))
-                    .body("[0].email", Matchers.is("foo@silva.com"));
-        // @formatter:on
-    }
-
-    @Test
     void contentNegotiationTest() {
         // @formatter:off
         RestAssured
