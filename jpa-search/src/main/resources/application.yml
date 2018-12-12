@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:somos
+    url: jdbc:h2:mem:jpa-search
     username: sa
     password:
   jpa:
