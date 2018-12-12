@@ -1,4 +1,4 @@
-package br.com.leonardoferreira.poc.apiversion.integration.v1;
+package br.com.leonardoferreira.poc.apiversion.integration.v1.header;
 
 import br.com.leonardoferreira.poc.apiversion.base.BaseIntegrationTest;
 import io.restassured.RestAssured;
@@ -13,13 +13,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ContactTest extends BaseIntegrationTest {
 
     @Test
-    void list() {
+    void contentNegotiationTest() {
         // @formatter:off
         RestAssured
                 .given()
                     .log().all()
+                    .header("Accept", "application/vnd.poc.v1+json")
                 .when()
-                    .get("/v1/contacts")
+                    .get("/contacts")
                 .then()
                     .log().all()
                     .body("$", Matchers.hasSize(2))
