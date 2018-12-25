@@ -1,0 +1,21 @@
+GET http://localhost:8080/contacts
+
+###
+
+POST http://localhost:8080/contacts
+Content-Type: application/json
+
+{
+  "name": "contact2",
+  "email": "contact2@email.com"
+}
+
+###
+
+GET http://localhost:8080/contacts/5
+
+###
+
+DELETE http://localhost:8080/contacts/4
+
+###
