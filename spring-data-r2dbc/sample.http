@@ -2,12 +2,17 @@ GET http://localhost:8080/contacts
 
 ###
 
+GET http://localhost:8080/contacts
+Accept: application/stream+json
+
+###
+
 POST http://localhost:8080/contacts
 Content-Type: application/json
 
 {
-  "name": "contact2",
-  "email": "contact2@email.com"
+  "name": "contact",
+  "email": "contact@email.com"
 }
 
 ###
