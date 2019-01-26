@@ -1,0 +1,3 @@
+ssh-key:
+  public: classpath:ssh_key/spring-rest-security.pub
+  private: classpath:ssh_key/spring-rest-security
