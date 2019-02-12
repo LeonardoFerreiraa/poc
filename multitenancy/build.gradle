@@ -1,0 +1,30 @@
+plugins {
+    id "org.springframework.boot" version "2.1.2.RELEASE"
+    id "java"
+}
+
+apply plugin: "io.spring.dependency-management"
+
+group = "br.com.leonardoferreira.poc"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = "11"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.security:spring-security-jwt:1.0.10.RELEASE"
+
+    implementation "org.mapstruct:mapstruct-processor:1.2.0.Final"
+    implementation "org.mapstruct:mapstruct-jdk8:1.2.0.Final"
+
+    compileOnly "org.projectlombok:lombok"
+    runtimeOnly "org.postgresql:postgresql"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}

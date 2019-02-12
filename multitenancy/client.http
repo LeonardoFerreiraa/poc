@@ -1,0 +1,59 @@
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+  "username": "leferreira",
+  "password": "123123"
+}
+
+###
+
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+  "username": "usr",
+  "password": "passwd"
+}
+
+###
+
+POST http://localhost:8080/login?username=leferreira&password=123123
+
+###
+
+POST http://localhost:8080/contacts
+Content-Type: application/json
+X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJsZWZlcnJlaXJhIiwicGFzc3dvcmQiOiIkMmEkMTAkVkxTWXZQWXdLd09TcmJsNmN1eFJTLjF0WndEd21HZURTS0xMUHUwd2NlRktCZUtIaUZsaVciLCJjcmVhdGVkQXQiOiIyMDE5LTAyLTEyVDExOjIxOjE5LjAyNTE2OSIsInVwZGF0ZWRBdCI6IjIwMTktMDItMTJUMTE6MjE6MTkuMDI1MjA1IiwiZW5hYmxlZCI6dHJ1ZSwiYXV0aG9yaXRpZXMiOltdLCJhY2NvdW50Tm9uRXhwaXJlZCI6dHJ1ZSwiYWNjb3VudE5vbkxvY2tlZCI6dHJ1ZSwiY3JlZGVudGlhbHNOb25FeHBpcmVkIjp0cnVlfQ.p62kQ59kGhg_0ytPTEGGZZNtrxL7XsoCRkp0tWTm90g
+
+{
+  "name": "contact1",
+  "email": "contact1@email.com"
+}
+
+###
+
+GET http://localhost:8080/contacts
+X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJsZWZlcnJlaXJhIiwicGFzc3dvcmQiOiIkMmEkMTAkVkxTWXZQWXdLd09TcmJsNmN1eFJTLjF0WndEd21HZURTS0xMUHUwd2NlRktCZUtIaUZsaVciLCJjcmVhdGVkQXQiOiIyMDE5LTAyLTEyVDExOjIxOjE5LjAyNTE2OSIsInVwZGF0ZWRBdCI6IjIwMTktMDItMTJUMTE6MjE6MTkuMDI1MjA1IiwiZW5hYmxlZCI6dHJ1ZSwiYXV0aG9yaXRpZXMiOltdLCJhY2NvdW50Tm9uRXhwaXJlZCI6dHJ1ZSwiYWNjb3VudE5vbkxvY2tlZCI6dHJ1ZSwiY3JlZGVudGlhbHNOb25FeHBpcmVkIjp0cnVlfQ.p62kQ59kGhg_0ytPTEGGZZNtrxL7XsoCRkp0tWTm90g
+
+### SECOND USER
+
+POST http://localhost:8080/login?username=usr&password=passwd
+
+###
+
+POST http://localhost:8080/contacts
+Content-Type: application/json
+X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c3IiLCJwYXNzd29yZCI6IiQyYSQxMCRldDJVaTh1aFFONmE3Z0VRUkk5TjN1Qi94bWxCNWN1QnlqT0RUWEcuZC9VNUwyYzVmYkoyNiIsImNyZWF0ZWRBdCI6IjIwMTktMDItMTJUMTE6MDc6MDQuNjI5MzY1IiwidXBkYXRlZEF0IjoiMjAxOS0wMi0xMlQxMTowNzowNC42Mjk0MSIsImVuYWJsZWQiOnRydWUsImF1dGhvcml0aWVzIjpbXSwiYWNjb3VudE5vbkV4cGlyZWQiOnRydWUsImFjY291bnROb25Mb2NrZWQiOnRydWUsImNyZWRlbnRpYWxzTm9uRXhwaXJlZCI6dHJ1ZX0.fNs0e2C2t6pxoHKG8IuDKJRCuO4Zew1r0ATB5R984g4
+
+{
+  "name": "contact2",
+  "email": "contact2@email.com"
+}
+
+###
+
+GET http://localhost:8080/contacts
+X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c3IiLCJwYXNzd29yZCI6IiQyYSQxMCRldDJVaTh1aFFONmE3Z0VRUkk5TjN1Qi94bWxCNWN1QnlqT0RUWEcuZC9VNUwyYzVmYkoyNiIsImNyZWF0ZWRBdCI6IjIwMTktMDItMTJUMTE6MDc6MDQuNjI5MzY1IiwidXBkYXRlZEF0IjoiMjAxOS0wMi0xMlQxMTowNzowNC42Mjk0MSIsImVuYWJsZWQiOnRydWUsImF1dGhvcml0aWVzIjpbXSwiYWNjb3VudE5vbkV4cGlyZWQiOnRydWUsImFjY291bnROb25Mb2NrZWQiOnRydWUsImNyZWRlbnRpYWxzTm9uRXhwaXJlZCI6dHJ1ZX0.fNs0e2C2t6pxoHKG8IuDKJRCuO4Zew1r0ATB5R984g4
+
+###
