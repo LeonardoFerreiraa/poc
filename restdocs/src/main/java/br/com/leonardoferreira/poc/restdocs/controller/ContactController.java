@@ -31,7 +31,7 @@ public class ContactController {
     }
 
     @GetMapping("/{id}")
-    public ContactResponse findById(final Long id) {
+    public ContactResponse findById(@PathVariable final Long id) {
         return contactService.findById(id);
     }
 

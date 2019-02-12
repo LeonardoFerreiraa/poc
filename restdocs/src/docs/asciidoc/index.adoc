@@ -1,0 +1,66 @@
+//:sectnums:
+//:sectnumlevels: 5
+:toc: left
+:toclevels: 3
+:icons: font
+//:snippets: /home/lferreira/workspace/poc/restdocs/build/generated-snippets
+
+= POC spring-rest-docs
+Doc Writer: <mail@leonardoferreira.com.br>
+
+== Contacts
+
+=== Find All Contacts
+
+Lists all previously saved contacts
+
+operation::SearchContactIntegrationTest/findAll[snippets='http-request,http-response,response-fields']
+
+=== Find Contact by id
+
+Find a contact by unique identifier
+
+operation::SearchContactIntegrationTest/findContactById[snippets='http-request,path-parameters,http-response,response-fields']
+
+==== HTTP response when not found
+
+include::{snippets}/SearchContactIntegrationTest/findByIdNotFound/http-response.adoc[]
+
+include::{snippets}/SearchContactIntegrationTest/findByIdNotFound/response-fields.adoc[]
+
+=== Create a new contact
+
+Registers a new contact
+
+operation::CreateContactIntegrationTest/withSuccess[snippets='http-request,request-fields,http-response,response-headers']
+
+==== HTTP response when fail in validations
+
+include::{snippets}/CreateContactIntegrationTest/failInValidations/http-response.adoc[]
+
+=== Update an existing contact
+
+Update contact information
+
+operation::UpdateContactIntegrationTest/updateContact[snippets='http-request,path-parameters,request-fields,http-response']
+
+==== HTTP response when fail in validations
+
+include::{snippets}/UpdateContactIntegrationTest/failInValidations/http-response.adoc[]
+
+==== HTTP response when not found
+
+include::{snippets}/UpdateContactIntegrationTest/updateNotFoundContact/http-response.adoc[]
+include::{snippets}/UpdateContactIntegrationTest/updateNotFoundContact/response-fields.adoc[]
+
+=== Delete an existing contact
+
+Delete a previously registered contact
+
+operation::DeleteContactIntegrationTest/deleteContact[snippets='http-request,path-parameters,http-response']
+
+==== HTTP response when not found
+
+include::{snippets}/DeleteContactIntegrationTest/deleteNotFoundContact/http-response.adoc[]
+
+include::{snippets}/DeleteContactIntegrationTest/deleteNotFoundContact/response-fields.adoc[]
