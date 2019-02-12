@@ -19,9 +19,9 @@ public class MultitenantJpaTransactionManager extends JpaTransactionManager {
                 .getResource(getEntityManagerFactory())).getEntityManager();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Account principal = (Account) authentication.getPrincipal();
 
-        if (principal != null) {
+        if (authentication != null) {
+            Account principal = (Account) authentication.getPrincipal();
             Session session = em.unwrap(Session.class);
             session.enableFilter("tenantFilter")
                     .setParameter("currentUser", principal.getUsername());
