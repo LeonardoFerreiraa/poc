@@ -1,9 +1,7 @@
-package br.com.leonardoferreira.poc.multitenancy.config;
+package br.com.leonardoferreira.poc.multitenancy.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +16,6 @@ import org.springframework.security.jwt.crypto.sign.Signer;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LoginAuthenticationProvider implements AuthenticationProvider {
 
     private final Signer signer;
@@ -28,6 +25,13 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
     private final ObjectMapper objectMapper;
 
     private final PasswordEncoder passwordEncoder;
+
+    public LoginAuthenticationProvider(Signer signer, UserDetailsService userDetailsService, ObjectMapper objectMapper, PasswordEncoder passwordEncoder) {
+        this.signer = signer;
+        this.userDetailsService = userDetailsService;
+        this.objectMapper = objectMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     @SneakyThrows

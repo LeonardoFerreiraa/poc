@@ -6,8 +6,6 @@ import br.com.leonardoferreira.poc.multitenancy.service.ContactService;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +19,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/contacts")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ContactController {
 
     private final ContactService contactService;
+
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
+    }
 
     @GetMapping
     public List<ContactResponse> findAll() {

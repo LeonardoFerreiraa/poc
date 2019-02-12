@@ -1,8 +1,6 @@
-package br.com.leonardoferreira.poc.multitenancy.config;
+package br.com.leonardoferreira.poc.multitenancy.config.security;
 
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,12 +12,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginAuthenticationProvider loginAuthenticationProvider;
 
     private final TokenAuthenticationProvider tokenAuthenticationProvider;
+
+    public WebSecurityConfig(LoginAuthenticationProvider loginAuthenticationProvider, TokenAuthenticationProvider tokenAuthenticationProvider) {
+        this.loginAuthenticationProvider = loginAuthenticationProvider;
+        this.tokenAuthenticationProvider = tokenAuthenticationProvider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

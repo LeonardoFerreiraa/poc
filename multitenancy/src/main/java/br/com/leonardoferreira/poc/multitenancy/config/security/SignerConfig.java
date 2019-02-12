@@ -1,4 +1,4 @@
-package br.com.leonardoferreira.poc.multitenancy.config;
+package br.com.leonardoferreira.poc.multitenancy.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

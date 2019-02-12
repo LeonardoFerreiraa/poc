@@ -4,9 +4,7 @@ import br.com.leonardoferreira.poc.multitenancy.domain.Account;
 import br.com.leonardoferreira.poc.multitenancy.domain.request.CreateAccountRequest;
 import br.com.leonardoferreira.poc.multitenancy.mapper.AccountMapper;
 import br.com.leonardoferreira.poc.multitenancy.repository.AccountRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
@@ -24,6 +21,12 @@ public class AccountService implements UserDetailsService {
     private final AccountMapper accountMapper;
 
     private final PasswordEncoder passwordEncoder;
+
+    public AccountService(AccountRepository accountRepository, AccountMapper accountMapper, PasswordEncoder passwordEncoder) {
+        this.accountRepository = accountRepository;
+        this.accountMapper = accountMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     @Transactional(readOnly = true)

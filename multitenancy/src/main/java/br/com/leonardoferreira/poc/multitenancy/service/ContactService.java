@@ -7,20 +7,22 @@ import br.com.leonardoferreira.poc.multitenancy.exception.ResourceNotFoundExcept
 import br.com.leonardoferreira.poc.multitenancy.mapper.ContactMapper;
 import br.com.leonardoferreira.poc.multitenancy.repository.ContactRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ContactService {
 
     private final ContactRepository contactRepository;
 
     private final ContactMapper contactMapper;
+
+    public ContactService(ContactRepository contactRepository, ContactMapper contactMapper) {
+        this.contactRepository = contactRepository;
+        this.contactMapper = contactMapper;
+    }
 
     @Transactional(readOnly = true)
     public List<ContactResponse> findAll() {

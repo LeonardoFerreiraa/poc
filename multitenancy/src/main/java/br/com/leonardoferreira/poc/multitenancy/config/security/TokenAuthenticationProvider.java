@@ -1,9 +1,7 @@
-package br.com.leonardoferreira.poc.multitenancy.config;
+package br.com.leonardoferreira.poc.multitenancy.config.security;
 
 import br.com.leonardoferreira.poc.multitenancy.domain.Account;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,12 +13,16 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedC
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TokenAuthenticationProvider implements AuthenticationProvider {
 
     private final ObjectMapper objectMapper;
 
     private final SignatureVerifier verifier;
+
+    public TokenAuthenticationProvider(ObjectMapper objectMapper, SignatureVerifier verifier) {
+        this.objectMapper = objectMapper;
+        this.verifier = verifier;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

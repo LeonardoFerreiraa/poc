@@ -1,4 +1,4 @@
-package br.com.leonardoferreira.poc.multitenancy.config;
+package br.com.leonardoferreira.poc.multitenancy.config.security;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -7,7 +7,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,10 +15,13 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedC
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-@RequiredArgsConstructor
 public class AuthenticationFilter extends GenericFilterBean {
 
     private final AuthenticationManager authenticationManager;
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
