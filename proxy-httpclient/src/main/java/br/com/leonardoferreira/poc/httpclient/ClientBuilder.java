@@ -1,5 +1,6 @@
 package br.com.leonardoferreira.poc.httpclient;
 
+import br.com.leonardoferreira.poc.httpclient.annotation.Client;
 import java.lang.reflect.Proxy;
 
 public class ClientBuilder<T> {
@@ -15,11 +16,12 @@ public class ClientBuilder<T> {
     }
 
     public T build() {
-        Object clientImpl = Proxy.newProxyInstance(client.getClassLoader(),
-                new Class[]{client},
-                new GenericClientImpl());
+        Client client = this.client.getAnnotation(Client.class);
+        GenericClientImpl genericClient = new GenericClientImpl(client.url());
 
-        return client.cast(clientImpl);
+        Object clientImpl = Proxy.newProxyInstance(this.client.getClassLoader(), new Class[]{this.client}, genericClient);
+
+        return this.client.cast(clientImpl);
     }
 
 }

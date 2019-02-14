@@ -1,18 +1,12 @@
 package br.com.leonardoferreira.poc.httpclient.domain.httpbin;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class HttpBinRequest {
 
     private String name;
 
-    public HttpBinRequest(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

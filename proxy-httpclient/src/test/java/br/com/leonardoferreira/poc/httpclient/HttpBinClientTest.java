@@ -6,7 +6,14 @@ import br.com.leonardoferreira.poc.httpclient.domain.httpbin.HttpBinResponse;
 import br.com.leonardoferreira.poc.httpclient.domain.httpbin.IpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HttpBinClientTest {
 
     private HttpBinClient httpBinClient;
@@ -20,16 +27,25 @@ public class HttpBinClientTest {
 
     @Test
     void printsIp() {
-        IpResponse ipResponse = httpBinClient.retrieveIP();
-        System.out.println(ipResponse);
+        Mono<IpResponse> result = httpBinClient.retrieveIP();
+
+        result.subscribe(System.out::println);
+
+        StepVerifier.create(result)
+                .expectNextCount(1)
+                .verifyComplete();
     }
 
     @Test
     void postRequest() {
         HttpBinRequest request = new HttpBinRequest("test-name");
 
-        HttpBinResponse response = httpBinClient.anything(request);
+        Mono<HttpBinResponse> result = httpBinClient.anything(request);
 
-        System.out.println(response);
+        result.subscribe(System.out::println);
+
+        StepVerifier.create(result)
+                .expectNextCount(1)
+                .verifyComplete();
     }
 }
