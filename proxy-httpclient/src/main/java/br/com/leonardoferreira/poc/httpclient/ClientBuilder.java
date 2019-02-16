@@ -1,27 +1,65 @@
 package br.com.leonardoferreira.poc.httpclient;
 
-import br.com.leonardoferreira.poc.httpclient.annotation.Client;
+import br.com.leonardoferreira.poc.httpclient.annotation.HttpClient;
+import br.com.leonardoferreira.poc.httpclient.client.Client;
+import br.com.leonardoferreira.poc.httpclient.client.impl.ReactorClient;
+import br.com.leonardoferreira.poc.httpclient.handler.ReactorHandler;
+import br.com.leonardoferreira.poc.httpclient.request.RequestBuilder;
+import br.com.leonardoferreira.poc.httpclient.request.impl.SpringRequestBuilder;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import org.springframework.util.ClassUtils;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import reactor.core.publisher.Mono;
 
 public class ClientBuilder<T> {
 
-    private Class<T> client;
+    private Class<T> targetClass;
+
+    private RequestBuilder requestBuilder;
+
+    private Client<?> client;
+
+    private InvocationHandler handler;
 
     private ClientBuilder(Class<T> clazz) {
-        this.client = clazz;
+        this.targetClass = clazz;
     }
 
     public static <T> ClientBuilder<T> of(Class<T> clazz) {
         return new ClientBuilder<>(clazz);
     }
 
+    public ClientBuilder<T> template(RequestBuilder requestBuilder) {
+        this.requestBuilder = requestBuilder;
+        return this;
+    }
+
+    public ClientBuilder<T> client(Client client) {
+        this.client = client;
+        return this;
+    }
+
+
     public T build() {
-        Client client = this.client.getAnnotation(Client.class);
-        GenericClientImpl genericClient = new GenericClientImpl(client.url());
+        if (this.requestBuilder == null) {
+            this.requestBuilder = new SpringRequestBuilder();
+        }
 
-        Object clientImpl = Proxy.newProxyInstance(this.client.getClassLoader(), new Class[]{this.client}, genericClient);
+        if (this.client == null) {
+            this.client = new ReactorClient(this.targetClass.getAnnotation(HttpClient.class).url());
+        }
 
-        return this.client.cast(clientImpl);
+        if (this.handler == null) {
+            this.handler = new ReactorHandler(this.client, this.requestBuilder);
+        }
+
+        Object clientImpl = Proxy.newProxyInstance(
+                this.targetClass.getClassLoader(),
+                new Class[]{this.targetClass},
+                this.handler);
+
+        return this.targetClass.cast(clientImpl);
     }
 
 }

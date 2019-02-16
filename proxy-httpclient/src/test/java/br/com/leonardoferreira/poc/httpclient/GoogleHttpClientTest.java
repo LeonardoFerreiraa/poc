@@ -11,7 +11,7 @@ import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GoogleClientTest {
+public class GoogleHttpClientTest {
 
     private GoogleClient googleClient;
 

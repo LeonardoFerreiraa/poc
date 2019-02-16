@@ -14,7 +14,7 @@ import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HttpBinClientTest {
+public class HttpBinHttpClientTest {
 
     private HttpBinClient httpBinClient;
 
