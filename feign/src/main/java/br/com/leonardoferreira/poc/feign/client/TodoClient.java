@@ -1,5 +1,6 @@
 package br.com.leonardoferreira.poc.feign.client;
 
+import br.com.leonardoferreira.poc.feign.client.config.ClientConfiguration;
 import br.com.leonardoferreira.poc.feign.domain.Todo;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
