@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
 
-@HttpClient(url = "https://httpbin.org/")
+@HttpClient(name = "httpBinClient", url = "https://httpbin.org/")
 public interface HttpBinClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/ip")

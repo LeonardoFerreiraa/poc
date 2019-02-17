@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
 
-@HttpClient(url = "https://www.google.com")
+@HttpClient(name = "googleClient", url = "https://www.google.com")
 public interface GoogleClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/")

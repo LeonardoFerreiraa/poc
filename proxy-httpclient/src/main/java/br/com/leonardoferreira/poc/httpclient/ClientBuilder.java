@@ -8,9 +8,6 @@ import br.com.leonardoferreira.poc.httpclient.request.RequestBuilder;
 import br.com.leonardoferreira.poc.httpclient.request.impl.SpringRequestBuilder;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import org.springframework.util.ClassUtils;
-import org.springframework.web.reactive.function.client.ClientResponse;
-import reactor.core.publisher.Mono;
 
 public class ClientBuilder<T> {
 
@@ -40,18 +37,19 @@ public class ClientBuilder<T> {
         return this;
     }
 
-
     public T build() {
+        HttpClient httpClient = this.targetClass.getAnnotation(HttpClient.class);
+
         if (this.requestBuilder == null) {
             this.requestBuilder = new SpringRequestBuilder();
         }
 
         if (this.client == null) {
-            this.client = new ReactorClient(this.targetClass.getAnnotation(HttpClient.class).url());
+            this.client = new ReactorClient(httpClient.url());
         }
 
         if (this.handler == null) {
-            this.handler = new ReactorHandler(this.client, this.requestBuilder);
+            this.handler = new ReactorHandler(this.targetClass, this.client, this.requestBuilder);
         }
 
         Object clientImpl = Proxy.newProxyInstance(

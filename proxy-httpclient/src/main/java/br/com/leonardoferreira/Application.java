@@ -1,8 +1,10 @@
 package br.com.leonardoferreira;
 
+import br.com.leonardoferreira.poc.httpclient.annotation.EnableHttpClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@EnableHttpClient
 @SpringBootApplication
 public class Application {
 

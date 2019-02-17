@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import org.reactivestreams.Publisher;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,13 +19,24 @@ public class ReactorHandler implements InvocationHandler {
 
     private RequestBuilder requestBuilder;
 
-    public ReactorHandler(Client<?> client, RequestBuilder requestBuilder) {
+    private Class<?> targetClass;
+
+    public ReactorHandler(Class<?> targetClass, Client<?> client, RequestBuilder requestBuilder) {
         this.client = (Client<Mono<ClientResponse>>) client;
         this.requestBuilder = requestBuilder;
+        this.targetClass = targetClass;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (ReflectionUtils.isEqualsMethod(method)) {
+            return args.length != 1 && targetClass.equals(args[0]);
+        }
+
+        if (ReflectionUtils.isToStringMethod(method)) {
+            return targetClass.toString();
+        }
+
         Type type = method.getGenericReturnType();
         if (!(type instanceof ParameterizedType)) {
             return null;
