@@ -1,4 +1,4 @@
-package br.com.leonardoferreira;
+package br.com.leonardoferreira.poc.httpclient;
 
 import br.com.leonardoferreira.poc.httpclient.annotation.EnableHttpClient;
 import org.springframework.boot.SpringApplication;

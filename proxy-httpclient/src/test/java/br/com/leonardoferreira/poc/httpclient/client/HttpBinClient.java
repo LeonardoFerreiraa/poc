@@ -5,6 +5,7 @@ import br.com.leonardoferreira.poc.httpclient.domain.httpbin.HttpBinRequest;
 import br.com.leonardoferreira.poc.httpclient.domain.httpbin.HttpBinResponse;
 import br.com.leonardoferreira.poc.httpclient.domain.httpbin.IpResponse;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,7 @@ public interface HttpBinClient {
     Mono<IpResponse> retrieveIP();
 
     @RequestMapping(method = RequestMethod.POST, value = "/anything")
-    Mono<HttpBinResponse> anything(@RequestBody HttpBinRequest httpBinRequest);
+    Mono<String> anything(@RequestBody HttpBinRequest httpBinRequest,
+                                   @RequestHeader("Content-Type") String contentType);
 
 }

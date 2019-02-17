@@ -35,7 +35,7 @@ public class HttpBinHttpClientTest {
     void postRequest() {
         HttpBinRequest request = new HttpBinRequest("test-name");
 
-        Mono<HttpBinResponse> result = httpBinClient.anything(request);
+        Mono<String> result = httpBinClient.anything(request, "application/json");
 
         result.subscribe(System.out::println);
 

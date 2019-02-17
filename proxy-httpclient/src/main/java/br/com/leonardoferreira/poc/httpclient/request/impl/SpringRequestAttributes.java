@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class SpringRequestAttributes implements RequestAttributes {
@@ -78,7 +77,7 @@ public class SpringRequestAttributes implements RequestAttributes {
             Parameter parameter = parameters[i];
 
             if (parameter.isAnnotationPresent(RequestBody.class)) {
-                this.body = BodyInserters.fromObject(args[i]);
+                this.body = args[i];
             } else if (parameter.isAnnotationPresent(RequestHeader.class)) {
                 addHeader(parameter, args[i]);
             } else if (parameter.isAnnotationPresent(RequestParam.class)) {

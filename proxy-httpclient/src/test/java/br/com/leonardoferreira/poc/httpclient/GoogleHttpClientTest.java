@@ -18,7 +18,6 @@ public class GoogleHttpClientTest {
 
     @Test
     void printsHomePage() {
-        googleClient.toString();
         Mono<String> homePage = googleClient.homePage();
 
         homePage.subscribe(System.out::println);

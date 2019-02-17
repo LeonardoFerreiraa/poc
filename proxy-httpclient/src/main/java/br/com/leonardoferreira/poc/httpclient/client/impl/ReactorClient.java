@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ReactiveHttpOutputMessage;
+import org.springframework.http.client.reactive.ClientHttpRequest;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -43,7 +43,7 @@ public class ReactorClient implements Client<Mono<ClientResponse>> {
                 .forEach((k, v) -> headers.put(k, Collections.singletonList(v)));
     }
 
-    private BodyInserter<Object, ReactiveHttpOutputMessage> convertBody(RequestAttributes requestAttributes) {
+    private BodyInserter<?, ? super ClientHttpRequest> convertBody(RequestAttributes requestAttributes) {
         return requestAttributes.getBody() == null ?
                 null : BodyInserters.fromObject(requestAttributes.getBody());
     }
