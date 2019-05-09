@@ -1,0 +1,7 @@
+spring:
+  http:
+    log-request-details: true
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
