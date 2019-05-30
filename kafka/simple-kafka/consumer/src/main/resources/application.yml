@@ -1,0 +1,13 @@
+server:
+  port: ${PID}
+
+spring:
+  kafka:
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+management:
+  endpoint:
+    health:
+      show-details: always

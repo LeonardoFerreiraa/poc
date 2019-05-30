@@ -1,4 +1,4 @@
-package br.com.leonardoferreira.pocamqp;
+package br.com.leonardoferreira.amqp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

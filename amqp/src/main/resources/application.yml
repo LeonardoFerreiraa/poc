@@ -4,3 +4,7 @@ spring:
     username: guest
     password: guest
     virtual-host: "/"
+    listener:
+      simple:
+        retry:
+          enabled: true
