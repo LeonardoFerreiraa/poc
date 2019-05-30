@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: simple-cloud-stream-rabbit
+  rabbitmq:
+    addresses: localhost:5672
+    username: guest
+    password: guest
+    virtual-host: "/"
+  cloud:
+    stream:
+      bindings:
+        simple-input:
+          destination: simple.exchange
+          group: ${spring.application.name}
+          binder: rabbit
+          consumer:
+            concurrency: 10
+        simple-output:
+          destination: simple.exchange
+          binder: rabbit
+      rabbit:
+        bindings:
+          simple-output:
+            producer:
+              routing-key-expression: "''"
+          simple-input:
+            consumer:
+              binding-routing-key: ""
+              auto-bind-dlq: true
+
