@@ -1,12 +1,19 @@
 package br.com.leonardoferreira.poc.feign.client;
 
+import br.com.leonardoferreira.poc.feign.client.config.HttpBinClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "httpbin", url = "https://httpbin.org/")
+@FeignClient(
+        name = "httpBinClient",
+        url = "${httpbin.url}",
+        configuration = {
+                HttpBinClientConfig.class
+        }
+)
 public interface HttpBinClient {
 
-    @GetMapping("/anything")
-    String anything();
+    @GetMapping("/status/500")
+    String retry();
 
 }
