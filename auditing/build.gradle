@@ -1,0 +1,38 @@
+plugins {
+	id "org.springframework.boot" version "2.1.6.RELEASE"
+	id "java"
+}
+
+apply plugin: "io.spring.dependency-management"
+
+group = "br.com.leonardoferreira"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = "1.12"
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "org.flywaydb:flyway-core"
+
+	implementation "org.hibernate:hibernate-envers"
+
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+
+	implementation "javax.xml.bind:jaxb-api:2.3.0"
+	implementation "com.sun.xml.bind:jaxb-impl:2.3.0"
+	compile 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
+
+	runtimeOnly "org.postgresql:postgresql"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
