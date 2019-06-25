@@ -17,11 +17,15 @@ Content-Type: application/json
 
 {
   "name": "first contact",
-  "email": "first@domain.com"
+  "email": "first@company.com"
 }
 
 ###
 
 DELETE http://localhost:8080/contacts/1
+
+###
+
+GET http://localhost:8080/contacts/1/histories
 
 ###

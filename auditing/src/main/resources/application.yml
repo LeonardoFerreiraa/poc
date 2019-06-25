@@ -19,4 +19,5 @@ spring:
         audit_table_suffix: "_HISTORY"
         revision_field_name: "REVISION"
         revision_type_field_name: "REVISION_TYPE"
+        store_data_at_delete: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
