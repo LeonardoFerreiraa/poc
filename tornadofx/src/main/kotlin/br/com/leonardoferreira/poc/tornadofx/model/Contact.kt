@@ -3,33 +3,25 @@ package br.com.leonardoferreira.poc.tornadofx.model
 import tornadofx.*
 import java.time.LocalDate
 
-class Contact(
-    name: String? = null,
-    email: String? = null,
-    phone: String? = null,
-    birthDay: LocalDate? = null
-) {
+data class Contact(
+    val name: String,
+    val email: String,
+    val phone: String,
+    val birthDay: LocalDate
+)
 
-    var name by property(name)
-    fun nameProperty() = getProperty(Contact::name)
+class ContactModel : ItemViewModel<Contact>() {
+    val name = bind(Contact::name)
+    val email = bind(Contact::email)
+    val phone = bind(Contact::phone)
+    val birthDay = bind(Contact::birthDay)
 
-    var email by property(email)
-    fun emailProperty() = getProperty(Contact::email)
-
-    var phone by property(phone)
-    fun phoneProperty() = getProperty(Contact::phone)
-
-    var birthDay by property(birthDay)
-    fun birthDayProperty() = getProperty(Contact::birthDay)
-
-    override fun toString(): String =
-        "Contact(name=$name, email=$email, phone=$phone, birthDay=$birthDay)"
-
-}
-
-class ContactModel : ItemViewModel<Contact>(Contact()) {
-    val name = bind(Contact::nameProperty)
-    val email = bind(Contact::emailProperty)
-    val phone = bind(Contact::phoneProperty)
-    val birthDay = bind(Contact::birthDayProperty)
+    override fun onCommit() {
+        item = Contact(
+            name = name.value,
+            email = email.value,
+            phone = phone.value,
+            birthDay = birthDay.value
+        )
+    }
 }

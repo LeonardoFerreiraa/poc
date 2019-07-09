@@ -11,6 +11,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     implementation("no.tornado:tornadofx:1.7.19")
+
 }
 
 compileKotlin {
