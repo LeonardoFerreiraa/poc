@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/poc_auditing
+    url: jdbc:postgresql://localhost:5432/poc_spring_events
     username: ${USER}
     password: 123123
   jpa:
@@ -15,9 +15,4 @@ spring:
             non_contextual_creation: true
         temp:
           use_jdbc_metadata_defaults: false
-      org.hibernate.envers:
-        audit_table_suffix: "_HISTORY"
-        revision_field_name: "REVISION"
-        revision_type_field_name: "REVISION_TYPE"
-        store_data_at_delete: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect

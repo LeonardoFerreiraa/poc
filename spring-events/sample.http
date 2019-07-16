@@ -1,0 +1,12 @@
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "price": 20.00
+}
+
+###
+
+GET http://localhost:8080/orders/1
+
+###

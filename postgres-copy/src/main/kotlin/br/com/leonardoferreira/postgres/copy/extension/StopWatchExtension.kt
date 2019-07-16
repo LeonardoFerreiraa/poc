@@ -9,6 +9,5 @@ fun runWithStopWatch(block: () -> Unit) {
     block()
     stopWatch.stop()
 
-    println(stopWatch.prettyPrint())
     println("seconds=${stopWatch.totalTimeSeconds}")
 }
