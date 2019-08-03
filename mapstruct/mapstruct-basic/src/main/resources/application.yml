@@ -1,10 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/poc_mapstruct
-    username: lferreira
+    username: ${USER}
     password: 123123
-  hikari:
-    maximum-pool-size: 10
   jpa:
     hibernate:
       ddl-auto: update

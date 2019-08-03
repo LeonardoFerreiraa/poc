@@ -1,11 +1,11 @@
 package br.com.leonardoferreira.poc.mapstruct.controller;
 
-import br.com.leonardoferreira.poc.mapstruct.domain.dto.UserDTO;
+import br.com.leonardoferreira.poc.mapstruct.domain.response.UserResponse;
 import br.com.leonardoferreira.poc.mapstruct.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,11 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(final UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public Page<UserDTO> index(Pageable pageable) {
-       return userService.findAll(pageable);
+    public Page<UserResponse> findAll(final Pageable pageable) {
+        return userService.findAll(pageable);
     }
+
+    @GetMapping("/{id}")
+    public UserResponse findById(@PathVariable final Long id) {
+        return userService.findById(id);
+    }
+
 }

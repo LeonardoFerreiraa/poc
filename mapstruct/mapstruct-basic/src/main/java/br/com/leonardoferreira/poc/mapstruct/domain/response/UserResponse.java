@@ -1,18 +1,17 @@
-package br.com.leonardoferreira.poc.mapstruct.domain.dto;
+package br.com.leonardoferreira.poc.mapstruct.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserResponse {
 
     private Integer id;
 
-    private String fullname;
+    private String fullName;
 
     private Long title;
 
