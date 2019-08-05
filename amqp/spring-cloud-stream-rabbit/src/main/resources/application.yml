@@ -27,4 +27,3 @@ spring:
             consumer:
               binding-routing-key: ""
               auto-bind-dlq: true
-

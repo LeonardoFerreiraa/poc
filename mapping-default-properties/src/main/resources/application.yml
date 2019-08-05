@@ -1,0 +1,8 @@
+my-properties:
+  properties:
+    firstCustom:
+      firstProperty: teste
+    secondCustom:
+      firstProperty: etset
+  default:
+    forthProperty: 2612
