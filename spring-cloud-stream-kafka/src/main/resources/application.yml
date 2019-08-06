@@ -1,0 +1,40 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: spring-cloud-stream-kafka
+  rabbitmq:
+    addresses: 0.0.0.0:5672
+    username: guest
+    password: guest
+    virtual-host: "/"
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: 0.0.0.0:9092
+      bindings:
+        simple-kafka-input:
+          destination: simple.topic
+          content-type: application/json
+          group: ${spring.application.name}
+          binder: kafka
+        simple-kafka-output:
+          destination: simple.topic
+          content-type: application/json
+          binder: kafka
+        simple-rabbit-input:
+          destination: simple.exchange
+          content-type: application/json
+          group: ${spring.application.name}
+          binder: rabbit
+        simple-rabbit-output:
+          destination: simple.exchange
+          content-type: application/json
+          binder: rabbit
+      rabbit:
+        bindings:
+          simple-rabbit-input:
+            consumer:
+              auto-bind-dlq: true
