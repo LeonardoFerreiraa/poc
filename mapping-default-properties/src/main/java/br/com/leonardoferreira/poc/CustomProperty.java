@@ -1,8 +1,5 @@
 package br.com.leonardoferreira.poc;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-@ConfigurationProperties(prefix = "custom")
 public class CustomProperty {
 
     private String firstProperty;

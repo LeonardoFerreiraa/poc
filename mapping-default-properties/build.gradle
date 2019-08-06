@@ -1,19 +1,23 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.6.RELEASE'
-	id 'java'
+    id "org.springframework.boot" version "2.1.6.RELEASE"
+    id "java"
 }
 
-apply plugin: 'io.spring.dependency-management'
+apply plugin: "io.spring.dependency-management"
 
-group = 'br.com.leonardoferreira'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = "1.8"
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.5.1"
+}
+
+test {
+    useJUnitPlatform()
 }
