@@ -26,11 +26,21 @@ public class RabbitListenerWithRetryConfig {
     }
 
     @Bean
+    public RabbitListenerWithRetryQueueRegister rabbitListenerWithRetryQueueRegister() {
+        return new RabbitListenerWithRetryQueueRegister();
+    }
+
+    @Bean
     public RabbitListenerWithRetryAnnotationBeanPostProcessor rabbitListenerWithRetryAnnotationBeanPostProcessor(
             final RabbitListenerWithRetryPropertyMap rabbitListenerWithRetryPropertyMap,
-            final RabbitTemplate rabbitTemplate
+            final RabbitTemplate rabbitTemplate,
+            final RabbitListenerWithRetryQueueRegister rabbitListenerWithRetryQueueRegister
     ) {
-        return new RabbitListenerWithRetryAnnotationBeanPostProcessor(rabbitListenerWithRetryPropertyMap, rabbitTemplate);
+        return new RabbitListenerWithRetryAnnotationBeanPostProcessor(
+                rabbitListenerWithRetryPropertyMap,
+                rabbitTemplate,
+                rabbitListenerWithRetryQueueRegister
+        );
     }
 
 }

@@ -11,4 +11,12 @@ public @interface RabbitListenerWithRetry {
 
     String event();
 
+    int maxAttempts() default 1;
+
+    int ttlRetry() default 5000;
+
+    Class<? extends Exception>[] discardWhen() default {};
+
+    Class<? extends Exception>[] dlqWhen() default {};
+
 }

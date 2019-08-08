@@ -9,10 +9,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class SimpleListener {
 
-    @RabbitListenerWithRetry(event = "my-event")
+    @RabbitListenerWithRetry(
+            event = "my-event",
+            maxAttempts = 3,
+            ttlRetry = 1000,
+            dlqWhen = {
+                    IllegalArgumentException.class
+            },
+            discardWhen = {
+                    RuntimeException.class,
+                    Exception.class
+            }
+    )
     public void listen(final SimpleMessage simpleMessage) {
         log.info("listen={}", simpleMessage);
-//        throw new RuntimeException();
     }
 
 }

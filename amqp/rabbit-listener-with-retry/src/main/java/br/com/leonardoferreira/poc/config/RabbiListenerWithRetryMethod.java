@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-class ListenerMethod {
+class RabbiListenerWithRetryMethod {
 
     private final Method method;
 
