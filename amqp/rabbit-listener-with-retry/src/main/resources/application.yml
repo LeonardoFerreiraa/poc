@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    listener-with-retry:
+      events:
+        my-event:
+          exchange: simple.exchange
+          queue: simple.queue
