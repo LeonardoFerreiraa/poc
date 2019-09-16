@@ -3,7 +3,7 @@
 :toc: left
 :toclevels: 3
 :icons: font
-//:snippets: /home/lferreira/workspace/poc/restdocs/build/generated-snippets
+//:snippets: /home/lferreira/workspace/poc/spring-restdocs/build/generated-snippets
 
 = POC spring-rest-docs
 Doc Writer: <mail@leonardoferreira.com.br>

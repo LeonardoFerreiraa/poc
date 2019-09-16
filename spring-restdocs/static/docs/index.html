@@ -426,6 +426,86 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .show-for-print{display:inherit!important}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
@@ -438,25 +518,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_contacts">Contacts</a>
 <ul class="sectlevel2">
-<li><a href="#_find_all_contacts">Find All Contacts</a></li>
+<li><a href="#_find_all_contacts">Find All Contacts</a>
+<ul class="sectlevel3">
+<li><a href="#_find_all_contacts_http_request">HTTP request</a></li>
+<li><a href="#_find_all_contacts_http_response">HTTP response</a></li>
+<li><a href="#_find_all_contacts_response_fields">Response fields</a></li>
+</ul>
+</li>
 <li><a href="#_find_contact_by_id">Find Contact by id</a>
 <ul class="sectlevel3">
+<li><a href="#_find_contact_by_id_http_request">HTTP request</a></li>
+<li><a href="#_find_contact_by_id_path_parameters">Path parameters</a></li>
+<li><a href="#_find_contact_by_id_http_response">HTTP response</a></li>
+<li><a href="#_find_contact_by_id_response_fields">Response fields</a></li>
 <li><a href="#_http_response_when_not_found">HTTP response when not found</a></li>
 </ul>
 </li>
 <li><a href="#_create_a_new_contact">Create a new contact</a>
 <ul class="sectlevel3">
+<li><a href="#_create_a_new_contact_http_request">HTTP request</a></li>
+<li><a href="#_create_a_new_contact_request_fields">Request fields</a></li>
+<li><a href="#_create_a_new_contact_http_response">HTTP response</a></li>
+<li><a href="#_create_a_new_contact_response_headers">Response headers</a></li>
 <li><a href="#_http_response_when_fail_in_validations">HTTP response when fail in validations</a></li>
 </ul>
 </li>
 <li><a href="#_update_an_existing_contact">Update an existing contact</a>
 <ul class="sectlevel3">
+<li><a href="#_update_an_existing_contact_http_request">HTTP request</a></li>
+<li><a href="#_update_an_existing_contact_path_parameters">Path parameters</a></li>
+<li><a href="#_update_an_existing_contact_request_fields">Request fields</a></li>
+<li><a href="#_update_an_existing_contact_http_response">HTTP response</a></li>
 <li><a href="#_http_response_when_fail_in_validations_2">HTTP response when fail in validations</a></li>
 <li><a href="#_http_response_when_not_found_2">HTTP response when not found</a></li>
 </ul>
 </li>
 <li><a href="#_delete_an_existing_contact">Delete an existing contact</a>
 <ul class="sectlevel3">
+<li><a href="#_delete_an_existing_contact_http_request">HTTP request</a></li>
+<li><a href="#_delete_an_existing_contact_path_parameters">Path parameters</a></li>
+<li><a href="#_delete_an_existing_contact_http_response">HTTP response</a></li>
 <li><a href="#_http_response_when_not_found_3">HTTP response when not found</a></li>
 </ul>
 </li>
@@ -474,8 +575,107 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Lists all previously saved contacts</p>
 </div>
-<div class="paragraph">
-<p>operation::SearchContactIntegrationTest/findAll[snippets='http-request,http-response,response-fields']</p>
+<div class="sect3">
+<h4 id="_find_all_contacts_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /contacts HTTP/1.1
+Host: poc-spring-rest-docs</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_all_contacts_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Date: Mon, 16 Sep 2019 02:58:08 GMT
+Content-Length: 759
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+
+[ {
+  "id" : 1,
+  "name" : "Raymund Tyrell",
+  "email" : "antwan.hauck@yahoo.com",
+  "createdAt" : "15/09/2019 23:58",
+  "updatedAt" : "15/09/2019 23:58"
+}, {
+  "id" : 2,
+  "name" : "Gulian Swann",
+  "email" : "jordan.dach@yahoo.com",
+  "createdAt" : "15/09/2019 23:58",
+  "updatedAt" : "15/09/2019 23:58"
+}, {
+  "id" : 3,
+  "name" : "Hoke",
+  "email" : "ai.mosciski@yahoo.com",
+  "createdAt" : "15/09/2019 23:58",
+  "updatedAt" : "15/09/2019 23:58"
+}, {
+  "id" : 4,
+  "name" : "Brenett",
+  "email" : "rickie.leffler@yahoo.com",
+  "createdAt" : "15/09/2019 23:58",
+  "updatedAt" : "15/09/2019 23:58"
+}, {
+  "id" : 5,
+  "name" : "Alysanne Lefford",
+  "email" : "jeffry.mraz@gmail.com",
+  "createdAt" : "15/09/2019 23:58",
+  "updatedAt" : "15/09/2019 23:58"
+} ]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_all_contacts_response_fields">Response fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of contacts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact unique identifier</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact email</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact creation date</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].updatedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact last update date</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -483,17 +683,161 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Find a contact by unique identifier</p>
 </div>
-<div class="paragraph">
-<p>operation::SearchContactIntegrationTest/findContactById[snippets='http-request,path-parameters,http-response,response-fields']</p>
+<div class="sect3">
+<h4 id="_find_contact_by_id_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /contacts/1 HTTP/1.1
+Host: poc-spring-rest-docs</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_contact_by_id_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. /contacts/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact unique identifier</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_find_contact_by_id_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Date: Mon, 16 Sep 2019 02:58:08 GMT
+Content-Length: 153
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+
+{
+  "id" : 1,
+  "name" : "Eleyna Westerling",
+  "email" : "vania.toy@gmail.com",
+  "createdAt" : "15/09/2019 23:58",
+  "updatedAt" : "15/09/2019 23:58"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_contact_by_id_response_fields">Response fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact unique identifier</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact email</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact creation date</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updatedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact last update date</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_http_response_when_not_found">HTTP response when not found</h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/SearchContactIntegrationTest/findByIdNotFound/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Date: Mon, 16 Sep 2019 02:58:08 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 155
+Transfer-Encoding: chunked
+
+{
+  "timestamp" : "2019-09-16T02:58:08.269+0000",
+  "status" : 404,
+  "error" : "Not Found",
+  "message" : "Resource Not Found",
+  "path" : "/contacts/1"
+}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/SearchContactIntegrationTest/findByIdNotFound/response-fields.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>timestamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error timestamp</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP status</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP status description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requested path</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -501,13 +845,134 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Registers a new contact</p>
 </div>
-<div class="paragraph">
-<p>operation::CreateContactIntegrationTest/withSuccess[snippets='http-request,request-fields,http-response,response-headers']</p>
+<div class="sect3">
+<h4 id="_create_a_new_contact_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /contacts HTTP/1.1
+Host: poc-spring-rest-docs
+Content-Type: application/json; charset=UTF-8
+Content-Length: 69
+
+{
+  "name" : "Arwyn Oakheart",
+  "email" : "jesus.klocko@gmail.com"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_a_new_contact_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must not be blank</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must be a well-formed email address. Must not be blank</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_create_a_new_contact_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
+Date: Mon, 16 Sep 2019 02:58:08 GMT
+Location: http://poc-spring-rest-docs/contacts/1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_a_new_contact_response_headers">Response headers</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>location</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location to retrieve the created contact</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_http_response_when_fail_in_validations">HTTP response when fail in validations</h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/CreateContactIntegrationTest/failInValidations/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
+Date: Mon, 16 Sep 2019 02:58:08 GMT
+Content-Length: 1148
+Connection: close
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+
+{
+  "timestamp" : "2019-09-16T02:58:08.594+0000",
+  "status" : 400,
+  "error" : "Bad Request",
+  "errors" : [ {
+    "codes" : [ "NotBlank.contactRequest.email", "NotBlank.email", "NotBlank.java.lang.String", "NotBlank" ],
+    "arguments" : [ {
+      "codes" : [ "contactRequest.email", "email" ],
+      "arguments" : null,
+      "defaultMessage" : "email",
+      "code" : "email"
+    } ],
+    "defaultMessage" : "must not be blank",
+    "objectName" : "contactRequest",
+    "field" : "email",
+    "rejectedValue" : null,
+    "bindingFailure" : false,
+    "code" : "NotBlank"
+  }, {
+    "codes" : [ "NotBlank.contactRequest.name", "NotBlank.name", "NotBlank.java.lang.String", "NotBlank" ],
+    "arguments" : [ {
+      "codes" : [ "contactRequest.name", "name" ],
+      "arguments" : null,
+      "defaultMessage" : "name",
+      "code" : "name"
+    } ],
+    "defaultMessage" : "must not be blank",
+    "objectName" : "contactRequest",
+    "field" : "name",
+    "rejectedValue" : null,
+    "bindingFailure" : false,
+    "code" : "NotBlank"
+  } ],
+  "message" : "Validation failed for object='contactRequest'. Error count: 2",
+  "path" : "/contacts"
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -516,21 +981,196 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Update contact information</p>
 </div>
-<div class="paragraph">
-<p>operation::UpdateContactIntegrationTest/updateContact[snippets='http-request,path-parameters,request-fields,http-response']</p>
+<div class="sect3">
+<h4 id="_update_an_existing_contact_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /contacts/1 HTTP/1.1
+Host: poc-spring-rest-docs
+Content-Type: application/json; charset=UTF-8
+Content-Length: 69
+
+{
+  "name" : "Ambrose Butterwell",
+  "email" : "wm.kuhic@yahoo.com"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_update_an_existing_contact_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. /contacts/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact unique identifier</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_update_an_existing_contact_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must not be blank</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Must be a well-formed email address. Must not be blank</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_update_an_existing_contact_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content
+Date: Mon, 16 Sep 2019 02:58:06 GMT</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_http_response_when_fail_in_validations_2">HTTP response when fail in validations</h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/UpdateContactIntegrationTest/failInValidations/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
+Content-Length: 1150
+Date: Mon, 16 Sep 2019 02:58:06 GMT
+Connection: close
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+
+{
+  "timestamp" : "2019-09-16T02:58:07.431+0000",
+  "status" : 400,
+  "error" : "Bad Request",
+  "errors" : [ {
+    "codes" : [ "NotBlank.contactRequest.email", "NotBlank.email", "NotBlank.java.lang.String", "NotBlank" ],
+    "arguments" : [ {
+      "codes" : [ "contactRequest.email", "email" ],
+      "arguments" : null,
+      "defaultMessage" : "email",
+      "code" : "email"
+    } ],
+    "defaultMessage" : "must not be blank",
+    "objectName" : "contactRequest",
+    "field" : "email",
+    "rejectedValue" : null,
+    "bindingFailure" : false,
+    "code" : "NotBlank"
+  }, {
+    "codes" : [ "NotBlank.contactRequest.name", "NotBlank.name", "NotBlank.java.lang.String", "NotBlank" ],
+    "arguments" : [ {
+      "codes" : [ "contactRequest.name", "name" ],
+      "arguments" : null,
+      "defaultMessage" : "name",
+      "code" : "name"
+    } ],
+    "defaultMessage" : "must not be blank",
+    "objectName" : "contactRequest",
+    "field" : "name",
+    "rejectedValue" : null,
+    "bindingFailure" : false,
+    "code" : "NotBlank"
+  } ],
+  "message" : "Validation failed for object='contactRequest'. Error count: 2",
+  "path" : "/contacts/1"
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_http_response_when_not_found_2">HTTP response when not found</h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/UpdateContactIntegrationTest/updateNotFoundContact/http-response.adoc[]
-Unresolved directive in index.adoc - include::{snippets}/UpdateContactIntegrationTest/updateNotFoundContact/response-fields.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Date: Mon, 16 Sep 2019 02:58:06 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 155
+Transfer-Encoding: chunked
+
+{
+  "timestamp" : "2019-09-16T02:58:06.804+0000",
+  "status" : 404,
+  "error" : "Not Found",
+  "message" : "Resource Not Found",
+  "path" : "/contacts/1"
+}</code></pre>
 </div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>timestamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error timestamp</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP status</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP status description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requested path</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -538,17 +1178,106 @@ Unresolved directive in index.adoc - include::{snippets}/UpdateContactIntegratio
 <div class="paragraph">
 <p>Delete a previously registered contact</p>
 </div>
-<div class="paragraph">
-<p>operation::DeleteContactIntegrationTest/deleteContact[snippets='http-request,path-parameters,http-response']</p>
+<div class="sect3">
+<h4 id="_delete_an_existing_contact_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /contacts/1 HTTP/1.1
+Host: poc-spring-rest-docs</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_an_existing_contact_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. /contacts/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contact unique identifier</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_an_existing_contact_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content
+Date: Mon, 16 Sep 2019 02:58:08 GMT</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_http_response_when_not_found_3">HTTP response when not found</h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/DeleteContactIntegrationTest/deleteNotFoundContact/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Date: Mon, 16 Sep 2019 02:58:08 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 155
+Transfer-Encoding: chunked
+
+{
+  "timestamp" : "2019-09-16T02:58:08.678+0000",
+  "status" : 404,
+  "error" : "Not Found",
+  "message" : "Resource Not Found",
+  "path" : "/contacts/1"
+}</code></pre>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::{snippets}/DeleteContactIntegrationTest/deleteNotFoundContact/response-fields.adoc[]</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>timestamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error timestamp</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP status</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP status description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requested path</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -556,7 +1285,7 @@ Unresolved directive in index.adoc - include::{snippets}/UpdateContactIntegratio
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 01:02:18 BRT
+Last updated 2019-09-15 23:54:01 BRT
 </div>
 </div>
 </body>

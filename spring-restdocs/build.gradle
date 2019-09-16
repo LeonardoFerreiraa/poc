@@ -56,7 +56,7 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter"
 
-    asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor"
+    asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.6.RELEASE"
     asciidoctor "io.spring.asciidoctor:spring-asciidoctor-extensions:0.1.3.RELEASE"
     testImplementation "org.springframework.restdocs:spring-restdocs-restassured"
 }

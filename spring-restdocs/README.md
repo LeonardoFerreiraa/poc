@@ -1,4 +1,4 @@
-https://leonardoferreiraa.github.io/poc/restdocs/static/docs/
+https://leonardoferreiraa.github.io/poc/spring-restdocs/static/docs/
 
 https://asciidoctor.org/docs/user-manual/
 
