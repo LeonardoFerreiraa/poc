@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: spring-cloud-stream-consumer
+  cloud:
+    stream:
+      default:
+        consumer:
+          use-native-encoding: true
+      bindings:
+        created-user-input:
+          group: ${spring.application.name}
+          destination: streaming.spring-cloud-stream-example.user.created
+      kafka:
+        binder:
+          consumer-properties:
+            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      schema:
+        registry:
+          url: http://localhost:8081
+      specific:
+        avro:
+          reader: true
+server:
+  port: 0

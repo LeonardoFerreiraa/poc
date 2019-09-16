@@ -1,0 +1,39 @@
+{
+  "type": "record",
+  "name": "CreatedUser",
+  "namespace": "br.com.leonardoferreira",
+  "doc": "created user doc",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long",
+      "doc": "id doc"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "doc": "name doc"
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "doc": "email doc"
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "createdAt doc"
+    },
+    {
+      "name": "updatedAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "updatedAt doc"
+    }
+  ]
+}

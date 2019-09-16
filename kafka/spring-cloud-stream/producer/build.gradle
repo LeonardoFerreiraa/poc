@@ -1,0 +1,68 @@
+plugins {
+    id "java"
+    id "org.springframework.boot" version "2.1.8.RELEASE"
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+
+    id "com.commercehub.gradle.plugin.avro" version "0.17.0"
+
+}
+
+sourceCompatibility = "1.12"
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://packages.confluent.io/maven/" }
+}
+
+ext["junit-jupiter.version"] = "5.5.1"
+ext["rest-assured.version"] = "4.1.1"
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.cloud:spring-cloud-stream"
+    implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka"
+
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    implementation "org.apache.avro:avro:1.9.1"
+    implementation "io.confluent:kafka-avro-serializer:5.2.2"
+
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "junit"
+    }
+    testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR3"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir file("$buildDir/generated-main-avro-java")
+        }
+    }
+}
+
+avro {
+    createSetters = false
+    fieldVisibility = "private"
+}
