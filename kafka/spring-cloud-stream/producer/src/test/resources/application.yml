@@ -8,5 +8,4 @@ spring:
           use-native-encoding: true
       bindings:
         created-user-output:
-          destination: streaming.spring-cloud-stream-example.user.created
-
+          destination: streaming.spring-cloud-stream-demo.user.created

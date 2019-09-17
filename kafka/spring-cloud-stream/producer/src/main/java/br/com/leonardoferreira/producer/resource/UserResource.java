@@ -28,22 +28,19 @@ public class UserResource {
     }
 
     @PostMapping
-    public HttpEntity<?> created(@RequestBody final CreateUserRequest createUserRequest) {
+    public HttpEntity<?> create(@RequestBody final CreateUserRequest request) {
         final CreatedUser createdUser = CreatedUser.newBuilder()
                 .setId(System.currentTimeMillis())
-                .setName(createUserRequest.getName())
-                .setEmail(createUserRequest.getEmail())
+                .setName(request.getName())
+                .setEmail(request.getEmail())
                 .setCreatedAt(LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant())
                 .setUpdatedAt(LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant())
                 .build();
 
-        log.info("M=created, createdUser={}", createdUser);
+        log.info("M=create, createdUser={}", createdUser);
+        final Message<CreatedUser> message = MessageBuilder.withPayload(createdUser).build();
 
-        final Message<CreatedUser> message = MessageBuilder.withPayload(createdUser)
-                .build();
-
-        createdUserChannel.output()
-                .send(message);
+        createdUserChannel.output().send(message);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

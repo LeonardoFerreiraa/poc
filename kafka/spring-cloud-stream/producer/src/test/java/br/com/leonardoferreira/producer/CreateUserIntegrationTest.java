@@ -5,9 +5,8 @@ import br.com.leonardoferreira.producer.channel.CreatedUserChannel;
 import br.com.leonardoferreira.producer.request.CreateUserRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.apache.http.HttpStatus;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,13 +27,8 @@ class CreateUserIntegrationTest {
         this.createdUserChannel = createdUserChannel;
     }
 
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = 8080;
-    }
-
     @Test
-    void createUserTest() {
+    void produceMessageTest() {
         final CreateUserRequest request = new CreateUserRequest();
         request.setName("Leonardo");
         request.setEmail("mail@leonardoferreira.com.br");
@@ -49,17 +43,15 @@ class CreateUserIntegrationTest {
                     .post("/users")
                 .then()
                     .log().all()
-                    .statusCode(HttpStatus.SC_CREATED);
+                    .statusCode(HttpServletResponse.SC_CREATED);
         // @formatter:on
 
         final CreatedUser createdUser = pollMessage();
-
         Assertions.assertNotNull(createdUser);
-        Assertions.assertTrue(createdUser.getId() > 0);
-        Assertions.assertNotNull(createdUser.getCreatedAt());
-        Assertions.assertNotNull(createdUser.getUpdatedAt());
         Assertions.assertEquals(request.getName(), createdUser.getName());
         Assertions.assertEquals(request.getEmail(), createdUser.getEmail());
+        Assertions.assertNotNull(createdUser.getCreatedAt());
+        Assertions.assertNotNull(createdUser.getUpdatedAt());
     }
 
     @SuppressWarnings("unchecked")

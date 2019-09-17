@@ -4,7 +4,6 @@ plugins {
     id "io.spring.dependency-management" version "1.0.8.RELEASE"
 
     id "com.commercehub.gradle.plugin.avro" version "0.17.0"
-
 }
 
 sourceCompatibility = "1.12"
