@@ -1,0 +1,12 @@
+management:
+  metrics:
+    export:
+      influx:
+        db: simple_app_metrics
+        uri: http://localhost:8086
+    tags:
+      instance-id: ${random.uuid}
+  endpoints:
+    web:
+      exposure:
+        include: "*"
