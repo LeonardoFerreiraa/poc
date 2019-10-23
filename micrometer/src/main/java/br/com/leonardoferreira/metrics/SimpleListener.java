@@ -30,7 +30,8 @@ public class SimpleListener {
                     @QueueBinding(
                             key = "",
                             exchange = @Exchange(
-                                    name = "simple.exchange"
+                                    name = "simple.exchange",
+                                    type = "topic"
                             ),
                             value = @Queue(
                                     name = "simple.queue",
