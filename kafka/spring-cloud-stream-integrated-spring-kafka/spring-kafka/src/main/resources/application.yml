@@ -1,0 +1,27 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: spring-kafka
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    properties:
+      schema:
+        registry:
+          url: http://127.0.0.1:8081
+      specific:
+        avro:
+          reader: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    consumer:
+      group-id: logistic
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
+kafka:
+  topic:
+    created-user: streaming.demo.user.created
+
