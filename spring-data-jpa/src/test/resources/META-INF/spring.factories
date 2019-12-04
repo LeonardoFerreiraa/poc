@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationContextInitializer=\
+  br.com.leonardoferreira.poc.config.database.DatabaseContainerContextInitializer
