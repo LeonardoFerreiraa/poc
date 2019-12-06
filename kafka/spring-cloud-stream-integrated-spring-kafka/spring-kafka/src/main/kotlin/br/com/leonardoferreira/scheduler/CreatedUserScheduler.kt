@@ -72,5 +72,3 @@ class CreatedUserScheduler(
                 it * -1
         }
 }
-
-
