@@ -5,10 +5,9 @@ import br.com.leonardoferreira.poc.domain.response.AggregatedResponse
 import br.com.leonardoferreira.poc.domain.response.AnythingResponse
 import br.com.leonardoferreira.poc.domain.response.TodoResponse
 import br.com.leonardoferreira.poc.domain.response.UuidResponse
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
@@ -20,38 +19,37 @@ class AggregateService(
     private val jsonPlaceHolderClient: WebClient
 ) {
 
-    suspend fun aggregate(): AggregatedResponse {
-        val todoAsync = retrieveTodoAsync()
+    suspend fun call(): AggregatedResponse = coroutineScope {
+        val todoAsync = async { retrieveTodo() }
 
-        val uuidResponse = retrieveUuidAsync()
+        val uuidResponse = async { retrieveUuid() }
 
-        return AggregatedResponse(
+        AggregatedResponse(
             todoTitle = todoAsync.await().title,
             uuid = uuidResponse.await().uuid
         )
     }
 
-    private suspend fun retrieveUuidAsync(): Deferred<UuidResponse> = GlobalScope.async {
+    private suspend fun retrieveUuid(): UuidResponse =
         httpBinClient.get()
             .uri("/uuid")
             .awaitExchange()
-            .awaitBody<UuidResponse>()
-    }
+            .awaitBody()
 
-    private fun retrieveTodoAsync(): Deferred<TodoResponse> = GlobalScope.async {
+    private suspend fun retrieveTodo(): TodoResponse {
         val anythingResponse = httpBinClient.post()
             .uri("/anything")
             .bodyValue(AnythingRequest(200))
             .awaitExchange()
             .awaitBody<AnythingResponse>()
 
-        jsonPlaceHolderClient.get()
+        return jsonPlaceHolderClient.get()
             .uri { uriBuilder ->
                 uriBuilder.path("/todos/{id}")
                     .build(anythingResponse.json.number)
             }
             .awaitExchange()
-            .awaitBody<TodoResponse>()
+            .awaitBody()
     }
 
 }

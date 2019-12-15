@@ -13,6 +13,6 @@ class AggregateController(
 
     @GetMapping
     suspend fun retrieveAggregation() =
-        aggregateService.aggregate()
+        aggregateService.call()
 
 }
