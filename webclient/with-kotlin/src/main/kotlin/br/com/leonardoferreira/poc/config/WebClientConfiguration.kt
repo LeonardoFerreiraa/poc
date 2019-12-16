@@ -10,7 +10,7 @@ class WebClientConfiguration {
     @Bean
     fun httpBinClient(): WebClient =
         WebClient.builder()
-            .baseUrl("http://httpbin.org/")
+            .baseUrl("https://httpbin.org/")
             .build()
 
     @Bean
