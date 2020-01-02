@@ -1,20 +1,21 @@
 package br.com.leonardoferreira.poc.restspringsecurity.service;
 
+import br.com.leonardoferreira.poc.restspringsecurity.domain.Account;
+import br.com.leonardoferreira.poc.restspringsecurity.exception.ResourceNotFoundException;
 import br.com.leonardoferreira.poc.restspringsecurity.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountService implements UserDetailsService {
+public class AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public AccountService(final AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
+    public Account findByUsername(final String username) throws UsernameNotFoundException {
         return accountRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username Not Found"));
     }

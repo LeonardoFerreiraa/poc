@@ -25,16 +25,17 @@ public class AuthenticationFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
+        final HttpServletRequest request = (HttpServletRequest) req;
+        final HttpServletResponse response = (HttpServletResponse) res;
 
-        String authToken = request.getHeader("X-Auth-Token");
+        final String authToken = request.getHeader("X-Auth-Token");
         if (!StringUtils.isEmpty(authToken)) {
-            PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(authToken, null);
-            Authentication authenticateResult;
+            final PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(authToken, null);
+
+            final Authentication authenticateResult;
             try {
                 authenticateResult = authenticationManager.authenticate(authentication);
-            } catch (PreAuthenticatedCredentialsNotFoundException e) {
+            } catch (final PreAuthenticatedCredentialsNotFoundException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
                 return;
             }

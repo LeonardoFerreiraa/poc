@@ -13,11 +13,6 @@ public class SimpleController {
         return "pong";
     }
 
-    @GetMapping
-    public String boom() {
-        throw new RuntimeException("ops...");
-    }
-
     @GetMapping("/me")
     public Account principal(@AuthenticationPrincipal Account account) {
         return account;

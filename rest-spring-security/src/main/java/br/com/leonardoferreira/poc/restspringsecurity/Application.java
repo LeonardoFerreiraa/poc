@@ -11,24 +11,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner dataInitializer(PasswordEncoder passwordEncoder, AccountRepository accountRepository) {
-		return args -> {
-			Account normaluser = new Account();
-			normaluser.setUsername("normaluser");
-			normaluser.setUsername(passwordEncoder.encode("123123"));
-			accountRepository.save(normaluser);
+    @Bean
+    public CommandLineRunner dataInitializer(final PasswordEncoder passwordEncoder,
+                                             final AccountRepository accountRepository) {
+        return args -> {
+            Account normalUser = new Account();
+            normalUser.setUsername("normalUser");
+            normalUser.setUsername(passwordEncoder.encode("123123"));
+            accountRepository.save(normalUser);
 
-			Account admin = new Account();
-			admin.setUsername("admin");
-			admin.setPassword(passwordEncoder.encode("321321"));
-			accountRepository.save(admin);
-		};
-	}
+            Account admin = new Account();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("321321"));
+            accountRepository.save(admin);
+        };
+    }
 
 }
 
