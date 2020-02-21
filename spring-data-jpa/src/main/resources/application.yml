@@ -10,10 +10,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true
     hibernate:
       ddl-auto: create-drop
 logging:
   level:
-#    org.hibernate.type: trace
     org.hibernate.type.descriptor.sql.BasicBinder: trace
