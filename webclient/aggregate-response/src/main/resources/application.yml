@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: webclient-aggregate-response
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      instance-id: ${random.uuid}

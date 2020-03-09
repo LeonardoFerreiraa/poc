@@ -13,15 +13,15 @@ public class Application {
     }
 
     @Bean
-    public WebClient httpBinClient() {
-        return WebClient.builder()
+    public WebClient httpBinClient(final WebClient.Builder builder) {
+        return builder
                 .baseUrl("https://httpbin.org")
                 .build();
     }
 
     @Bean
-    public WebClient jsonPlaceHolderClient() {
-        return WebClient.builder()
+    public WebClient jsonPlaceHolderClient(final WebClient.Builder builder) {
+        return builder
                 .baseUrl("https://jsonplaceholder.typicode.com/")
                 .build();
     }

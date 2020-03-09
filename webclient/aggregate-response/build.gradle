@@ -1,8 +1,8 @@
 plugins {
     id "java"
 
-    id "org.springframework.boot" version "2.2.2.RELEASE"
-    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+    id "org.springframework.boot" version "2.2.5.RELEASE"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
 }
 
 sourceCompatibility = "1.12"
@@ -13,6 +13,9 @@ repositories {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-webflux"
+
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "io.micrometer:micrometer-registry-prometheus"
 
     compileOnly "org.projectlombok:lombok"
     annotationProcessor "org.projectlombok:lombok"

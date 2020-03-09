@@ -6,5 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class AnythingRequest {
+
     private final Integer number;
+
 }

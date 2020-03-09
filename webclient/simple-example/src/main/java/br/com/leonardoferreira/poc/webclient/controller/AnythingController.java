@@ -29,4 +29,8 @@ public class AnythingController {
         return anythingService.findComplexThing();
     }
 
+    @GetMapping("/not-found")
+    public Mono<SimpleThing> notFound() {
+        return anythingService.notFound();
+    }
 }

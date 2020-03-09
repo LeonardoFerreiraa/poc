@@ -1,16 +1,18 @@
 package br.com.leonardoferreira.poc.webclient.service;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.UUID;
+
 import br.com.leonardoferreira.poc.webclient.domain.ComplexThing;
 import br.com.leonardoferreira.poc.webclient.domain.SimpleThing;
 import br.com.leonardoferreira.poc.webclient.domain.response.RandomResponse;
 import br.com.leonardoferreira.poc.webclient.domain.response.UuidResponse;
-import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple3;
 
 @Slf4j
 @Service
@@ -18,16 +20,19 @@ public class AnythingService {
 
     private final Random random;
 
-    public AnythingService() {
+    private final WebClient httpBinWebClient;
+
+    private final WebClient localHostClient;
+
+    public AnythingService(final WebClient httpBinWebClient,
+                           final WebClient localHostClient) {
+        this.httpBinWebClient = httpBinWebClient;
+        this.localHostClient = localHostClient;
         this.random = new Random();
     }
 
     public Mono<SimpleThing> findSimpleThing() {
-        WebClient client = WebClient.builder()
-                .baseUrl("https://httpbin.org")
-                .build();
-
-        return client.get()
+        return httpBinWebClient.get()
                 .uri("/uuid")
                 .exchange()
                 .flatMap(clientResponse -> clientResponse.bodyToMono(UuidResponse.class))
@@ -35,21 +40,13 @@ public class AnythingService {
     }
 
     public Mono<ComplexThing> findComplexThing() {
-        WebClient localHostClient = WebClient.builder()
-                .baseUrl("http://localhost:8080")
-                .build();
-
-        WebClient httpbinClient = WebClient.builder()
-                .baseUrl("https://httpbin.org")
-                .build();
-
-        Mono<UuidResponse> firstCall = httpbinClient.get()
+        final Mono<UuidResponse> firstCall = httpBinWebClient.get()
                 .uri("/uuid")
                 .retrieve()
                 .bodyToMono(UuidResponse.class)
                 .doOnSuccess(i -> log.info("success firstCall"));
 
-        Mono<UuidResponse> secondCall = httpbinClient.get()
+        final Mono<UuidResponse> secondCall = httpBinWebClient.get()
                 .uri("/status/500")
                 .retrieve()
                 .bodyToMono(UuidResponse.class)
@@ -60,7 +57,7 @@ public class AnythingService {
                 )
                 .doOnSuccess(i -> log.info("success secondCall"));
 
-        Mono<Long> thirdCall = localHostClient.get()
+        final Mono<Long> thirdCall = localHostClient.get()
                 .uri("/randoms")
                 .retrieve()
                 .bodyToMono(RandomResponse.class)
@@ -68,19 +65,27 @@ public class AnythingService {
                 .doOnSuccess(i -> log.info("success randomCall"));
 
         return Mono.zip(firstCall, secondCall, thirdCall)
-                .map(result -> {
-                    UuidResponse resultT1 = result.getT1();
-                    UuidResponse resultT2 = result.getT2();
-                    Long resultT3 = result.getT3();
-
-                    ComplexThing complexThing = new ComplexThing();
-                    complexThing.setFirst(resultT1.getUuid());
-                    complexThing.setSecond(resultT2.getUuid());
-                    complexThing.setCalculatedData(resultT3);
-                    complexThing.setCreation(LocalDateTime.now());
-
-                    return complexThing;
-                });
+                .map(this::mapToComplexThing);
     }
 
+    public Mono<SimpleThing> notFound() {
+        return httpBinWebClient.get()
+                .uri("/status/404")
+                .retrieve()
+                .bodyToMono(UuidResponse.class)
+                .map(uuidResponse -> new SimpleThing(uuidResponse.getUuid()));
+    }
+
+    private ComplexThing mapToComplexThing(final Tuple3<UuidResponse, UuidResponse, Long> result) {
+        final UuidResponse resultT1 = result.getT1();
+        final UuidResponse resultT2 = result.getT2();
+        final Long resultT3 = result.getT3();
+
+        return ComplexThing.builder()
+                .first(resultT1.getUuid())
+                .second(resultT2.getUuid())
+                .calculatedData(resultT3)
+                .creation(LocalDateTime.now())
+                .build();
+    }
 }
