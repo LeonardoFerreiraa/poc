@@ -2,3 +2,9 @@ jsonplaceholder:
   url: https://jsonplaceholder.typicode.com
 httpbin:
   url: https://httpbin.org
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

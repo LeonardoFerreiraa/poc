@@ -1,8 +1,8 @@
 plugins {
     id "java"
 
-    id "org.springframework.boot" version "2.2.2.RELEASE"
-    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+    id "org.springframework.boot" version "2.2.5.RELEASE"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
 }
 
 sourceCompatibility = "1.13"
@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
 
     compileOnly "org.projectlombok:lombok"
@@ -29,6 +30,6 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.RELEASE"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3"
     }
 }
