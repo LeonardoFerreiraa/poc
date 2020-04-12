@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: spring-kafka-transaction
+  datasource:
+    url: jdbc:postgresql://localhost:5432/poc_spring_kafka_transaction
+    username: ${USER}
+    password: 123123
+  jpa:
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: update
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: tx-
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
