@@ -1,0 +1,14 @@
+rabbitmq:
+  queues:
+    publish-queue:
+      name: "CONVERSATIONAL.AI.EVENTS.DEPLOY.PUBLISH"
+      routing-key: "deploy-publish-event"
+    remove-queue:
+      name: "CONVERSATIONAL.AI.EVENTS.DEPLOY.REMOVE"
+      routing-key: "deploy-remove-event"
+    validate-queue:
+      name: "CONVERSATIONAL.AI.EVENTS.DEPLOY.VALIDATE"
+      routing-key: "deploy-validate-event"
+    delay-queue:
+      name: "CONVERSATIONAL.AI.EVENTS.DEPLOY.DELAY"
+      routing-key: "deploy-delay-event"
