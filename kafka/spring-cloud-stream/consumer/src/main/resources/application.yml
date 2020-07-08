@@ -10,6 +10,9 @@ spring:
         created-user-input:
           destination: streaming.spring-cloud-stream-demo.user.created
           group: ${spring.application.name}
+        received-customer-input:
+          destination: customer.received
+          group: ${spring.application.name}
       kafka:
         binder:
           configuration:

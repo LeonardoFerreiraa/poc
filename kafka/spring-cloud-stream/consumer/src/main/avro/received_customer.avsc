@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "ReceivedCustomer",
+  "namespace": "br.com.leonardoferreira",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    }
+  ]
+}
