@@ -1,0 +1,5 @@
+#feign:
+#  client:
+#    config:
+#      httpBinClient:
+#        url: https://httpbin.org
