@@ -5,8 +5,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     api(project(":client-library"))
+    
+    testImplementation("io.rest-assured:rest-assured")
 }
 
-tasks.withType<BootJar> {
+tasks.bootJar {
     enabled = true
+}
+
+tasks.jar {
+    enabled = false
 }

@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.4.0"
     kotlin("plugin.spring") version "1.4.0" apply false
 
-    id("org.springframework.boot") version "2.3.3.RELEASE" apply false
+    id("org.springframework.boot") version "2.3.3.RELEASE"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
 }
 
@@ -15,6 +15,10 @@ allprojects {
             jvmTarget = "13"
         }
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 subprojects {
@@ -58,4 +62,8 @@ configure(subprojects - project(":common-library")) {
     dependencies {
         implementation(project(":common-library"))
     }
+}
+
+tasks.bootJar {
+    enabled = false
 }
