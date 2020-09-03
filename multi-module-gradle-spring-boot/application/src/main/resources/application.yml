@@ -4,8 +4,8 @@ management:
       exposure:
         include: "*"
 
-feign:
-  client:
-    config:
-      httpBinClient:
-        url: https://httpbin.org
+#feign:
+#  client:
+#    config:
+#      httpBinClient:
+#        url: https://httpbin.org

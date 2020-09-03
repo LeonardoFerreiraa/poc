@@ -13,6 +13,6 @@ class UUIDController(
 
     @GetMapping
     fun findUUID() =
-        httpBinClient.findUUID().uuid
+        httpBinClient.findUUID()
 
 }
