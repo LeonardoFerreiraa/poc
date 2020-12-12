@@ -1,0 +1,5 @@
+org.springframework.test.context.TestExecutionListener=\
+    br.com.leonardoferreira.poc.testlibrary.testexecutionlistener.CleanDatabaseTestExecutionListener,\
+    br.com.leonardoferreira.poc.testlibrary.testexecutionlistener.RestAssuredExecutionListener
+org.springframework.context.ApplicationContextInitializer=\
+  br.com.leonardoferreira.poc.testlibrary.applicationcontextinitializer.DatabaseContainerContextInitializer
