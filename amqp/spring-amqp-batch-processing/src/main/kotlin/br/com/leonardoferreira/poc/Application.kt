@@ -72,7 +72,7 @@ class ScheduledProducer(
         val myObject = MyObject(UUID.randomUUID().toString())
         println("producer: $myObject")
 
-        rabbitTemplate.convertAndSend(DirectExchange.DEFAULT.name, "my-queue", myObject)
+        rabbitTemplate.convertAndSend(DirectExchange.DEFAULT.getName(), "my-queue", myObject)
     }
 
 }
