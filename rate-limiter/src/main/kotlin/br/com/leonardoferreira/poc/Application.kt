@@ -56,7 +56,7 @@ class MyController(
         redisTemplate.execute(
             rateLimiterScript,
             listOf("ratelimiter:$id"),
-            UUID.randomUUID().toString(),
+            UUID.randomUUID(),
             System.nanoTime(),
             Duration.ofMinutes(1).toNanos(),
             10
