@@ -1,0 +1,3 @@
+GET http://localhost:8080/books/4
+Authorization: Basic admin password
+
