@@ -1,0 +1,26 @@
+plugins {
+    id "java"
+
+    id "org.springframework.boot" version "2.5.0"
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+}
+
+sourceCompatibility = "16"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+
+    implementation "org.springframework.boot:spring-boot-starter-cache"
+    implementation "com.github.ben-manes.caffeine:caffeine"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+test {
+    useJUnitPlatform()
+}
