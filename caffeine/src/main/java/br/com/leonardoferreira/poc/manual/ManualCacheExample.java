@@ -70,14 +70,14 @@ class CacheConfiguration {
     }
 
     private Cache buildCache(final String cacheName, final CacheProperties cacheProperties) {
-        final Caffeine<Object, Object> caffeine = Caffeine.newBuilder();
+        final Caffeine<Object, Object> builder = Caffeine.newBuilder();
 
-        setIfNotNull(cacheProperties.expireAfterAccess(), caffeine::expireAfterAccess);
-        setIfNotNull(cacheProperties.expireAfterWrite(), caffeine::expireAfterWrite);
-        setIfNotNull(cacheProperties.maximumSize(), caffeine::maximumSize);
-        setIfNotNull(cacheProperties.maximumWeight(), caffeine::maximumWeight);
+        setIfNotNull(cacheProperties.expireAfterAccess(), builder::expireAfterAccess);
+        setIfNotNull(cacheProperties.expireAfterWrite(), builder::expireAfterWrite);
+        setIfNotNull(cacheProperties.maximumSize(), builder::maximumSize);
+        setIfNotNull(cacheProperties.maximumWeight(), builder::maximumWeight);
 
-        return new CaffeineCache(cacheName, caffeine.build());
+        return new CaffeineCache(cacheName, builder.build());
     }
 
     private <T> void setIfNotNull(T value, Consumer<T> consumer) {

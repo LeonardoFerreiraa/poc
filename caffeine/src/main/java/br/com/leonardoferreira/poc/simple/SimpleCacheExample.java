@@ -60,7 +60,7 @@ class MyService {
         return "hello world";
     }
 
-    @Cacheable(cacheNames = "optionalGreeting")
+    @Cacheable(cacheNames = "optionalGreeting", unless = "#result == null")
     public Optional<String> optionalGreeting() {
         System.out.println("optionalGreeting");
         return Optional.of("hello world");
