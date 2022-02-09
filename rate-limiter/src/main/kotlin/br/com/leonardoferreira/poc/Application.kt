@@ -84,8 +84,8 @@ class MyController(
         val result: List<*> = redisTemplate.execute(
             rateLimiterScriptV2,
             listOf(
-                "request_rate_limiter.{$id}.tokens",
-                "request_rate_limiter.{$id}.timestamp"
+                "rl:$id:tokens",
+                "rl:$id:timestamp"
             ),
             10, // replenishRate -> How many requests per second do you want a user to be allowed to do?
             10, // burstCapacity ->  How much bursting do you want to allow?

@@ -1,14 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.4.1"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.spring") version "1.4.21"
+    kotlin("jvm") version "1.5.21"
+    kotlin("plugin.spring") version "1.5.21"
+
+    id("org.springframework.boot") version "2.5.3"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
-group = "br.com.leonardoferreira"
-version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_15
 
 repositories {
@@ -18,7 +17,6 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-//    implementation("org.redisson:redisson:3.14.1")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
