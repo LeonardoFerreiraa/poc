@@ -1,0 +1,96 @@
+# JMH version: 1.33
+# VM version: JDK 17, OpenJDK 64-Bit Server VM, 17+35-LTS
+# VM invoker: /home/leferreira/.jdks/corretto-17/bin/java
+# VM options: -javaagent:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/lib/idea_rt.jar=38603:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/bin -Dfile.encoding=UTF-8
+# Blackhole mode: full + dont-inline hint (default, use -Djmh.blackhole.autoDetect=true to auto-detect)
+# Warmup: 1 iterations, 10 s each
+# Measurement: 5 iterations, 3 s each
+# Timeout: 10 min per iteration
+# Threads: 10 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: br.com.leonardoferreira.poc.Slf4jBenchmark.slf4jAsyncAppender
+
+# Run progress: 0,00% complete, ETA 00:01:15
+# Fork: 1 of 1
+# Warmup Iteration   1: 1054487,844 ops/s
+Iteration   1: 1423127,116 ops/s
+Iteration   2: 1283369,624 ops/s
+Iteration   3: 1220651,637 ops/s
+Iteration   4: 1298915,515 ops/s
+Iteration   5: 1395530,154 ops/s
+
+
+Result "br.com.leonardoferreira.poc.Slf4jBenchmark.slf4jAsyncAppender":
+  1324318,809 ±(99.9%) 321610,513 ops/s [Average]
+  (min, avg, max) = (1220651,637, 1324318,809, 1423127,116), stdev = 83521,229
+  CI (99.9%): [1002708,296, 1645929,322] (assumes normal distribution)
+
+
+# JMH version: 1.33
+# VM version: JDK 17, OpenJDK 64-Bit Server VM, 17+35-LTS
+# VM invoker: /home/leferreira/.jdks/corretto-17/bin/java
+# VM options: -javaagent:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/lib/idea_rt.jar=38603:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/bin -Dfile.encoding=UTF-8
+# Blackhole mode: full + dont-inline hint (default, use -Djmh.blackhole.autoDetect=true to auto-detect)
+# Warmup: 1 iterations, 10 s each
+# Measurement: 5 iterations, 3 s each
+# Timeout: 10 min per iteration
+# Threads: 10 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: br.com.leonardoferreira.poc.Slf4jBenchmark.slf4jConsoleAppender
+
+# Run progress: 33,33% complete, ETA 00:00:51
+# Fork: 1 of 1
+# Warmup Iteration   1: 1359814,157 ops/s
+Iteration   1: 1252586,845 ops/s
+Iteration   2: 1393231,791 ops/s
+Iteration   3: 1296655,377 ops/s
+Iteration   4: 1355422,170 ops/s
+Iteration   5: 1446540,264 ops/s
+
+
+Result "br.com.leonardoferreira.poc.Slf4jBenchmark.slf4jConsoleAppender":
+  1348887,290 ±(99.9%) 295442,467 ops/s [Average]
+  (min, avg, max) = (1252586,845, 1348887,290, 1446540,264), stdev = 76725,470
+  CI (99.9%): [1053444,823, 1644329,756] (assumes normal distribution)
+
+
+# JMH version: 1.33
+# VM version: JDK 17, OpenJDK 64-Bit Server VM, 17+35-LTS
+# VM invoker: /home/leferreira/.jdks/corretto-17/bin/java
+# VM options: -javaagent:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/lib/idea_rt.jar=38603:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/bin -Dfile.encoding=UTF-8
+# Blackhole mode: full + dont-inline hint (default, use -Djmh.blackhole.autoDetect=true to auto-detect)
+# Warmup: 1 iterations, 10 s each
+# Measurement: 5 iterations, 3 s each
+# Timeout: 10 min per iteration
+# Threads: 10 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: br.com.leonardoferreira.poc.Slf4jBenchmark.systemout
+
+# Run progress: 66,67% complete, ETA 00:00:25
+# Fork: 1 of 1
+# Warmup Iteration   1: 122559,338 ops/s
+Iteration   1: 127135,620 ops/s
+Iteration   2: 128512,929 ops/s
+Iteration   3: 137527,646 ops/s
+Iteration   4: 137478,039 ops/s
+Iteration   5: 145945,334 ops/s
+
+
+Result "br.com.leonardoferreira.poc.Slf4jBenchmark.systemout":
+  135319,914 ±(99.9%) 29561,615 ops/s [Average]
+  (min, avg, max) = (127135,620, 135319,914, 145945,334), stdev = 7677,057
+  CI (99.9%): [105758,299, 164881,528] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:01:17
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark                             Mode  Cnt        Score        Error  Units
+Slf4jBenchmark.slf4jAsyncAppender    thrpt    5  1324318,809 ± 321610,513  ops/s
+Slf4jBenchmark.slf4jConsoleAppender  thrpt    5  1348887,290 ± 295442,467  ops/s
+Slf4jBenchmark.systemout             thrpt    5   135319,914 ±  29561,615  ops/s

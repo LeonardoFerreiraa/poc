@@ -1,0 +1,67 @@
+# JMH version: 1.33
+# VM version: JDK 17, OpenJDK 64-Bit Server VM, 17+35-LTS
+# VM invoker: /home/leferreira/.jdks/corretto-17/bin/java
+# VM options: -javaagent:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/lib/idea_rt.jar=40677:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/bin -Dfile.encoding=UTF-8
+# Blackhole mode: full + dont-inline hint (default, use -Djmh.blackhole.autoDetect=true to auto-detect)
+# Warmup: 1 iterations, 10 s each
+# Measurement: 5 iterations, 3 s each
+# Timeout: 10 min per iteration
+# Threads: 10 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: br.com.leonardoferreira.poc.Slf4jBenchmark.slf4jConsoleAppender
+
+# Run progress: 0,00% complete, ETA 00:00:50
+# Fork: 1 of 1
+# Warmup Iteration   1: 1150149,585 ops/s
+Iteration   1: 1220576,285 ops/s
+Iteration   2: 1213899,046 ops/s
+Iteration   3: 976496,420 ops/s
+Iteration   4: 1021566,966 ops/s
+Iteration   5: 1213548,270 ops/s
+
+
+Result "br.com.leonardoferreira.poc.Slf4jBenchmark.slf4jConsoleAppender":
+  1129217,397 ±(99.9%) 461842,308 ops/s [Average]
+  (min, avg, max) = (976496,420, 1129217,397, 1220576,285), stdev = 119938,981
+  CI (99.9%): [667375,089, 1591059,706] (assumes normal distribution)
+
+
+# JMH version: 1.33
+# VM version: JDK 17, OpenJDK 64-Bit Server VM, 17+35-LTS
+# VM invoker: /home/leferreira/.jdks/corretto-17/bin/java
+# VM options: -javaagent:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/lib/idea_rt.jar=40677:/home/leferreira/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.7172.25/bin -Dfile.encoding=UTF-8
+# Blackhole mode: full + dont-inline hint (default, use -Djmh.blackhole.autoDetect=true to auto-detect)
+# Warmup: 1 iterations, 10 s each
+# Measurement: 5 iterations, 3 s each
+# Timeout: 10 min per iteration
+# Threads: 10 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: br.com.leonardoferreira.poc.Slf4jBenchmark.systemout
+
+# Run progress: 50,00% complete, ETA 00:00:25
+# Fork: 1 of 1
+# Warmup Iteration   1: 137507,948 ops/s
+Iteration   1: 145193,818 ops/s
+Iteration   2: 146255,246 ops/s
+Iteration   3: 144020,885 ops/s
+Iteration   4: 133765,959 ops/s
+Iteration   5: 148111,148 ops/s
+
+
+Result "br.com.leonardoferreira.poc.Slf4jBenchmark.systemout":
+  143469,411 ±(99.9%) 21675,165 ops/s [Average]
+  (min, avg, max) = (133765,959, 143469,411, 148111,148), stdev = 5628,971
+  CI (99.9%): [121794,247, 165144,576] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:00:51
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark                             Mode  Cnt        Score        Error  Units
+Slf4jBenchmark.slf4jAsyncAppender    thrpt    5  1129217,397 ± 461842,308  ops/s
+Slf4jBenchmark.systemout             thrpt    5   143469,411 ±  21675,165  ops/s
