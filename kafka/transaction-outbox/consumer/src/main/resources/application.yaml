@@ -1,0 +1,10 @@
+server:
+  port: 0
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
