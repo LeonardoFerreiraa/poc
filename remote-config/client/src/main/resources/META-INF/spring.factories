@@ -1,0 +1,5 @@
+org.springframework.boot.context.config.ConfigDataLocationResolver=\
+  br.com.leonardoferreira.poc.MyConfigDataLocationResolver
+
+org.springframework.boot.context.config.ConfigDataLoader=\
+  br.com.leonardoferreira.poc.MyConfigDataLoader
