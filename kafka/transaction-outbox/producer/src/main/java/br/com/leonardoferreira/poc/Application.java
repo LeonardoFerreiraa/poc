@@ -1,6 +1,7 @@
 package br.com.leonardoferreira.poc;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -51,14 +52,21 @@ public class Application {
 @RequiredArgsConstructor
 class MyScheduler {
 
+    private static final int AMOUNT_PER_PAGE = 2;
+
     private final OutboxEntryService outboxEntryService;
 
-    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+    @Scheduled(fixedDelay = 5_000)
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void job() {
-        final String jobId = UUID.randomUUID().toString();
-        List<OutboxEntry> entries = outboxEntryService.acquire(jobId, 2);
-        entries.forEach(outboxEntryService::proccess);
+        for (var entries = acquire(); !entries.isEmpty(); entries = acquire()) {
+            entries.forEach(outboxEntryService::process);
+        }
+    }
+
+    private List<OutboxEntry> acquire() {
+        final String acquirerId = UUID.randomUUID().toString();
+        return outboxEntryService.acquire(acquirerId, AMOUNT_PER_PAGE);
     }
 
 }
@@ -129,7 +137,7 @@ class OutboxEntry {
 
     private String body;
 
-    private String jobId;
+    private String acquirerId;
 
     private LocalDateTime acquiredAt;
 
@@ -180,7 +188,7 @@ class OutboxEntryService {
     }
 
     @SneakyThrows
-    void proccess(final OutboxEntry outboxEntry) {
+    void process(final OutboxEntry outboxEntry) {
         log.info("M=proccess, outboxEntry={}", outboxEntry);
 
         kafkaTemplate.send(
@@ -191,14 +199,14 @@ class OutboxEntryService {
                 )
         ).addCallback(
                 result -> repository.delete(outboxEntry),
-                ex -> repository.clearJobId(outboxEntry.getId())
+                ex -> repository.clearAcquirerId(outboxEntry.getId())
         );
     }
 
     @Transactional
-    public List<OutboxEntry> acquire(final String jobId, final int amount) {
-        repository.acquire(jobId, amount);
-        return repository.findByJobId(jobId);
+    public List<OutboxEntry> acquire(final String acquirerId, final int amount) {
+        repository.acquire(acquirerId, amount);
+        return repository.findByAcquirerId(acquirerId);
     }
 
 }
@@ -213,37 +221,34 @@ interface OutboxEntryRepository extends CrudRepository<OutboxEntry, Long> {
     @Modifying
     @Query(
             value = """
-                    update outbox_entry 
-                    set job_id = null, 
-                        acquired_at = null 
-                    where id = :id""",
+                    update outbox_entry
+                    set acquirer_id = null,
+                        acquired_at = null
+                    where id = :id
+                    """,
             nativeQuery = true
     )
-    void clearJobId(Long id);
+    void clearAcquirerId(Long id);
 
     @Modifying
     @Query(
             value = """
                     update outbox_entry
-                    set job_id = :jobId,
+                    set acquirer_id = :acquirerId,
                         acquired_at = now()
                     where id in (
-                         select id 
+                         select id
                          from outbox_entry
-                         where  job_id is null
+                         where acquirer_id is null
                                 or acquired_at + interval '5 minutes' <= now()
-                         limit  :amount
+                         limit :amount
                          for update skip locked
                      );
                     """,
             nativeQuery = true
     )
-    void acquire(String jobId, int amount);
+    void acquire(String acquirerId, int amount);
 
-    List<OutboxEntry> findByJobId(String jobId);
+    List<OutboxEntry> findByAcquirerId(String acquirerId);
 
 }
-
-
-
-

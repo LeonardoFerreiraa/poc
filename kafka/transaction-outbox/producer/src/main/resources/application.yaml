@@ -16,4 +16,8 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: update
+  task:
+    scheduling:
+      pool:
+        size: 10
 
