@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      username: root
+      password: toor
+      database: poc_simple_crud
